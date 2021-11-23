@@ -1,0 +1,433 @@
+\documentclass{llncs}
+
+\usepackage[a4paper,includeheadfoot,top=1.65in,bottom=1.65in,left=1.73in,hcentering]{geometry}
+\usepackage[pdftex]{graphicx}
+\usepackage[sectionbib]{natbib}
+
+\usepackage[utf8]{inputenc}
+\usepackage{t1enc}
+\usepackage{tikz-dependency}
+\usepackage{qtree}
+\usepackage{float}
+\restylefloat{figure}
+\usepackage{tikz-qtree}
+\usepackage[english]{babel}
+\usepackage{todonotes}
+\selectlanguage{english}
+
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{soul}
+
+\newcommand{\embert}{\texttt{emBERT}}
+\newcommand{\emtsv}{\texttt{emtsv}}
+\newcommand{\hubert}{\texttt{huBERT}}
+\newcommand{\magyarlanc}{\texttt{magyarlanc}}
+\newcommand{\spacy}{spaCy}
+\newcommand{\udpipe}{UDPipe}
+\newcommand{\stanza}{Stanza}
+\newcommand{\huspacy}{HuSpaCy}
+\newcommand{\huntoken}{HunToken}
+\newcommand{\lemmy}{Lemmy}
+
+\renewcommand\todo{\noop}
+% \renewcommand\bibname{References}
+
+\begin{document}
+
+%\pagestyle{myheadings}
+%\def\leftmark{{\rm XIV. Magyar Sz\'am\'\i t\'og\'epes Nyelv\'eszeti Konferencia}}
+%\def\rightmark{{\rm Szeged, 2018. január 18-19.}}
+
+%  \setcounter{page}{1}
+
+\title{\huspacy: an industrial-strength Hungarian natural language processing toolkit}
+%a november 15-ig bekuldott verziobol kerjuk a szerzok adatait kihagyni
+%	\author{Orosz György\inst{1}, Farkas Richárd\inst{1}, Vincze Veronika\inst{1,2}\\
+% \institute{$^1$Szegedi Tudom\'anyegyetem, Informatikai Int\'ezet\break
+%Szeged, \'Arp\'ad t\'er 2.\break
+%$^2$MTA-SZTE Mesters\'eges Intelligencia Kutat\'ocsoport\break
+%Szeged, Tisza Lajos k\"or\'ut 103.\break 
+%\{zsibrita,rfarkas,vinczev\}@inf.u-szeged.hu\break
+%}
+%}
+
+\maketitle
+
+\begin{abstract}
+Although there are a couple of open-source language processing pipelines available for Hungarian, none of them satisfies the requirements of today’s NLP applications. A language processing pipeline should consist of close to state-of-the-art lemmatization, morphosyntactic analysis, entity recognition and word embeddings. 
+Industrial text processing applications have to satisfy non-functional software quality requirements, what is more, frameworks supporting multiple languages are more and more favored.
+%have been released in large numbers in recent years, such pipelines also have to satisfy non-functional software quality requirements.  
+%Last, but not least, the international research and industrial community have been experimenting with languages whose language-specific analyzer tools are available in multilingual language processing libraries. 
+This paper introduces \huspacy, an industry-ready Hungarian language processing pipeline. The presented tool provides components for the most important basic linguistic analysis tasks. It is open-source and is available under a permissive license. Our system is built upon spaCy’s NLP components which means that it is fast, has a rich ecosystem of NLP applications and extensions, comes with extensive documentation and a well-known API. Besides the overview of the underlying models, we also present rigorous evaluation on common benchmark datasets. Our experiments confirm that HuSpaCy has high accuracy in all subtasks while maintaining resource-efficient prediction capabilities. 
+\end{abstract}
+
+\section{Introduction}
+
+Basic natural language processing tasks such as tokenization, sentence splitting, part-of-speech tagging, lemmatization, dependency parsing, named entity recognition and word embedding representations are amongst the most widely studied problems in natural language processing. Several text analysis applications have been developed during the last decades for both English and other less-resourced languages such as Hungarian. However, a large majority of them solely focus on achieving high accuracy scores on artificial benchmarks and ignore the importance of the underlying model’s practical usability.
+
+
+In this paper we introduce \huspacy, an industry-strength Hungarian text processing pipeline capable of parsing and tagging texts with high accuracy on limited computational resources. Our system is built upon \spacy’s\footnote{\url{https://spacy.io/}} NLP components, which means that it is fast, has a rich ecosystem of NLP applications and extensions, comes with extensive documentation and a well-known API. 
+
+Besides the overview of the underlying models, we also  present rigorous evaluation using the Universal grammatical annotations. Our experiments confirm that \huspacy has near state-of-the-art accuracy in many subtasks while maintaining resource-efficient prediction capabilities.
+
+\section{Background}
+
+\subsection{Demands for a language processing pipeline in the 2020s}
+Starting from the release of the Penn Treebank \citep{penntreebank} in 1992, the research community developed language processing tools for particular tasks, like tokenization, part-of-speech tagging etc. These tools are usually run in a sequence and form a pipeline. In the 2000s, many language-specific corpora and treebanks were developed along with such pipelines. Hungarian was among the best supported languages \citep{metanet} ten years ago.
+
+In the early 2010s, Universal PoS \citep{udpos} and Universal Dependency \citep{univedepv1} labeling schemata were developed with the goals of ''cross-linguistically consistent treebank annotation for many languages'' and ''facilitating multilingual parser development, cross-lingual learning, and parsing research from a language typology perspective.'' Many language-specific pipelines changed their representations to the universal annotation schema, but most of them stayed in their own software architecture. Industrial NLP applications are frequently multi-lingual, i.e. the same NLP task has to be solved in several languages. The demand for standardization over languages is high in commercial partners. Beyond universal PoS and dependency annotations, companies who are not NLP experts but want to apply language processing tools prefer multilingual software frameworks and make business decisions to support Hungarian, based on the availability in multilingual frameworks.
+
+The last five years of NLP are dominated by neural language models (NLM) and the applications based on them \citep{nlp-trends}. Academic research has introduced various deep learning methods outperforming previous state of the art in many areas. Such systems usually employ a single neural network providing end-to-end NLP solutions without the need for specific pipeline steps. Also, several pre-trained multilingual NLMs are becoming available which provide standardised solutions for many languages. Regardless of the multilinguality and the high accuracy of deep learning solutions, a lot of critiques have been raised by real-world industrial NLP projects recently.
+
+These are as follows: deep learning solutions often require far more computational resources compared to classic solutions. They heavily rely on GPU acceleration along with significant memory consumption. What is more, their running costs are usually 10 or even 100 times higher than that of alternative solutions. These drawbacks are questioning the commercial return of the accuracy gain. We also note that modern NLP pipelines consist of static word embedding representations and use deep learning for individual pipeline steps as well, hence, the advantage of large neural end-to-end systems
+%\footnote{e.g. BERT models} 
+are very small.
+
+Another industrial demand about language processing systems is to provide human-readable output. Most of the industrial applications are fully or partially rule-based solutions, as (enough) training data for a pure machine learning solution is not available. And there is no free lunch! Each and every real-world application has its own requirements. Rule-based components of these real-world applications require language-specific representations which can be used for defining rules. Such human-readable representations consist of tokens, lemmata, part-of-speech tags, morphological features, dependency parse trees and named entities. Static word embeddings are often integral parts of industrial applications, as many practical algorithms (e.g. semantic textual similarity methods) heavily rely on them.
+
+\subsection{Requirements for industrial-strength language processing pipelines}
+
+Considering decades of experience of practical NLP applications, developing an “industrial strength” text processing system is a challenging task. First of all, such a tool should tackle the most important text preprocessing tasks including tokenization, sentence splitting, PoS tagging, lemmatization, dependency parsing, named entity recognition and word embedding representation. 
+
+Next, the application has to be accurate enough for real world scenarios while it should be resource conscious at the same time. Furthermore, an industry focused system should be developer friendly, customizable and easy-to-integrate, as NLP modules are integral parts of a larger system in practical applications. These requirements imply that solid documentation should be available as well. Moreover, it is often desired that the underlying machine learning model(s) should be reproducible and controllable.
+
+Last but not least, modern NLP applications are usually multilingual, thus compatibility with international annotation standards  \citep{udpos,univedepv1,UniDep,unimorph} is necessary. Moreover, it is also preferred to be easily usable through a well-known multilingual toolkit.
+
+
+\subsection{The landscape of Hungarian language processing pipelines}
+
+Up until recently, only a few text processing applications were focused on meeting these criteria even for English. When spaCy was released in 2015 \citep{spacy}, it was one one of the first tools targeting mainly real-world industrial applications. Its authors created an unprecedented tool which offers near state-of-the-art accuracy while being an order of magnitude faster than other tools available. SpaCy also comes with an intuitive API, has detailed documentation, and also fits well into the Python ecosystem of machine learning tools. What is more, it is easily deployable and offers built-in syntax and entity visualization tools as well.
+
+The landscape of the Hungarian text processing systems is similar to that of English before the ''industrial NLP revolution''. There are a number of standalone text analysis tools\footnote{cf. \url{https://github.com/oroszgy/awesome-hungarian-nlp}} \citep{metanet} capable of performing individual text processing tasks, but they often do not play well with each other. 
+
+In contrast, there are only a few attempts at providing industrial Hungarian pipelines. One of them is \magyarlanc{} \citep{magyaralanc} which is a Java based system consisting of state-of-the-art pipeline steps, which were adapted and extended from various libraries. It was designed to serve industrial applications, what is more, a lot of effort has been made on software quality, speed, memory efficiency and customizability. It performs tokenization, sentence boundary detection (SBD), PoS tagging, lemmatization and dependency parsing, but lacks entity recognition and word embeddings. It uses the version 1 of the Universal Dependency (UD) annotations. Although the tool is still used in real world commercial applications, it is not maintained for years.
+
+There is only one other attempt to provide a unified framework for Hungarian text processing tools: \emtsv{} \citep{emtsv1, emtsv2, emtsv3} (and its predecessor e-magyar \citep{emagyar1, emagyar2}) is a result of a multi-institute collaboration project aiming to integrate existing NLP toolkits into a single application. Unfortunately, neither computational efficiency nor developer ergonomics were amongst the main goals of the project. Although \emtsv{} can yield Universal morphosyntactic annotations through conversion, it is rather inaccurate. What is more, it is not designed to efficiently deal with word vectors, therefore no such facility is available in its system.
+
+Talking of Hungarian-specific pipelines, we must mention the contenders of the recent multilingual CoNLL text parsing competitions \citep{conll-2017, conll-2018}. There were numerous  submissions, but \stanza{} \citep{stanza} and \udpipe{} \citep{udpipe} are by far the most popular freely available off-the-shelf applications. These tools provide morphological and syntactical analysis of raw texts for many languages, but lack entity annotations. Accuracy scores vary across tools, but all of them are limited by the small size of the publicly available UD annotated gold standard corpora.
+
+\newlength{\lsys}
+\settowidth{\lsys}{embeddings}
+\begin{table}
+\begin{center}
+\begin{tabular}{
+%lccccc
+    l<{\hspace{1em}}
+  >{\centering\arraybackslash}m{\lsys}
+  >{\centering\arraybackslash}m{\lsys}
+  >{\centering\arraybackslash}m{\lsys}
+  >{\centering\arraybackslash}m{\lsys}
+  >{\centering\arraybackslash}m{\lsys}
+}
+\toprule
+           & NER & 
+           \begin{tabular}{@{}c@{}}Word  \\ embeddings\end{tabular} &
+           \begin{tabular}{@{}c@{}}High \\ throughput\end{tabular} & 
+           \begin{tabular}{@{}c@{}}Part of a \\ multilingual \\ pipeline\end{tabular}
+             &
+             \begin{tabular}{@{}c@{}}Free for \\ commercial \\ usage\end{tabular} \\
+\midrule
+\magyarlanc{} & -                       & -                                   & \checkmark                                   & -                                                   & \checkmark                                             \\
+\emtsv{}      & \checkmark                       & -                                   & -                                   & -                                                   & -                                             \\
+\udpipe{}     & -                       & -                                   & \checkmark                                   & \checkmark                                                   & -                                             \\
+\stanza{}     & \checkmark                       & \checkmark                                   & -                                   & \checkmark                                                   & \checkmark                                            
+\\
+\bottomrule
+\end{tabular}
+\vspace{1em}
+\caption{Hungarian language processing pipelines evaluated with regards of requirements of industrial applicability}
+\label{table:systems}
+\end{center}
+\end{table}
+
+
+Table \ref{table:systems} summarizes the landscape of the most important Hungarian language processing pipelines and show how they meet the requirements of today’s NLP applications. All in all, we can say that none of them is easily applicable in industrial settings.
+
+We present \huspacy{}, a new industry-ready Hungarian natural language processing toolkit\footnote{We implemented our pipeline in spaCy v3.x. Prior to this work, there were attempts (\url{https://github.com/oroszgy/spacy-hungarian-models}) to support Hungarian in this framework, but none of those releases are compatible with the tool’s current version.}. 
+It provides all the aforementioned basic text processing modules with high accuracy. The underlying models are optimized to be light on memory consumption and CPU usage. The presented tool is open source\footnote{The URL is to be shared in the final paper.} and is available under the permissive CC-BY-SA-4.0 license. Our system is built on top of spaCy’s infrastructure, thus extensive documentation, debugging tools, an ergonomic API and a flourishing ecosystem are already provided.
+
+\section{Pipeline steps}
+
+This section introduces the NLP algorithms behind \huspacy{}. The presented system is built on spaCy’s architecture, therefore we mainly relied on its symbolic and ML-based text processing infrastructure. The following paragraphs give only a high-level overview of the internals of the parent system and rather concentrate on the contributions of this work.
+
+\subsection{Tokenization}
+
+As regards tokenization, the developed solution uses and extends the underlying system’s algorithm \citep{spacy-tokenization}. It works as follows: first the input text is split on whitespaces, then token boundaries are identified by splitting prefixing or suffixing character sequences. To make this algorithm viable for Hungarian, we extended it with language specific prefix and suffix splitting rules. Furthermore, we had to deal with the ambiguity of tokens around the full stop character, thus a decent abbreviation list has been incorporated to increase the module’s accuracy. During this process we mostly relied on the tests of \huntoken{} \citep{huntoken}.
+
+\subsection{Morphosyntactic tagging, sentence splitting and parsing}
+\label{sec:tagging}
+
+Sentence boundaries, dependency parse trees, PoS tags, and the corresponding morphosyntactic features are predicted by a multitask deep learning model of the underlying NLP framework. SpaCy’s machine learning approach can be summarized as ''embed, encode, attend, predict''  \citep{spacy-neural-model} which our system adapts for its tagging and parsing components.
+
+Tokens are embedded using the concatenation of static (pretrained) word vectors and ones learned during the task-specific training process. We use a publicly\footnote{\url{https://github.com/oroszgy/hunlp-resources/releases/tag/webcorpuswiki_word2vec_v0.1}} available 300d word embedding which has been trained on the Hungarian Webcorpus \citep{HunWebCorpus} and a snapshot of the Hungarian Wikipedia with CBOW methodology \citep{word2vec}. Task specific word vectors are 256 wide consisting 64 dimensional embeddings of the tokens’ prefixes, suffixes, shapes and the lowercase forms. To make such computation efficient, feature hashing is extensively applied to all kinds of input strings. 
+
+During the encoding part, vectors are passed through a four deep stacked CNN encoder \citep{cnn} which uses residual connections and is accompanied with maxout pooling\footnote{The pooling step is considered to be the “attention” mechanism.} \citep{spacy-parser2}. The tagger predicts supertags for tokens which are the combinations of the dependency, part-of-speech and morphosyntactic labels. Efficient prediction is guaranteed by the underlying greedy tagger consisting only of a linear and a softmax layer. As for the dependency parsing, an arc-eager transition system \citep{spacy-parser} is utilized, which shares weights with the tagger model through multitask learning. 
+
+Finally, sentence boundary recognition is formalized as a sequence tagging problem where tokens are tagged with a binary label indicating the first token of a sentence. This component is an integral part of the multitask architecture, thus it also shares its lower layers with the parser and the morphosyntactic tagger.
+
+\subsection{Lemmatization}
+
+SpaCy’s default lemmatization model is mainly designed for English. It is not suitable for morphologically complex languages such as Hungarian as it only uses lookup tables. Hence, we decided to look for a more sophisticated solution, and integrated the \lemmy{} toolkit \citep{lemmy} which is an open-source Python implementation of the CST rule-learning engine \citep{cst-lemmatizer}. To improve its accuracy we incorporated three minor modifications. First, prefixing numbers of numeric tokens are masked to help the generalization of the engine for inflected numbers. (For example the masked token of `2021-ben’ becomes `0000-ben’.) Second, we enforce lowercase lemmata of sentence starting tokens if they are not proper nouns. Finally, if there are multiple lemma candidates available for a given (word, tag) pair, we pick the one with the highest frequency on the training dataset.
+
+\subsection{Named entity recognition}
+
+SpaCy’s entity recognizer is built on the transition-based parser architecture described in Section \ref{sec:tagging} (similarly to \citet{spacy-ner}). However, there are two key differences compared to the system of \citet{spacy-ner} The first is that the set of possible transition actions reflects the BILOU tagging scheme. This trick allows the model to have better discrimination ability between different entity classes, furthermore it makes the learning problem easier. Second, the state vector computation includes clues not just from the surrounding words but the tokens of previous entities as well. The sequence tagger model uses BILOU tags for encoding entity boundaries and the decoder is based on a simple greedy softmax layer similar to the morphosyntactic tagger.
+
+\section{Text parsing experiments}
+
+In order to show \huspacy{} abilities, we performed a series of experiments and compared it with the most popular Hungarian NLP pipelines available. For each component, we measured its performance on benchmark datasets along with the model’s throughput and memory consumption. As named entity recognition is usually not part of such pipelines, first we focus on evaluating the text parsing task including tokenization, sentence splitting, morphosyntactic tagging, lemmatization and dependency parsing. 
+
+We compare our system with the Hungarian specific \emtsv{} pipeline and two other multilingual toolkits, namely \udpipe{} and \stanza{}. The latter tools score high on parsing UD corpora and both are off-the-shelf available systems. We used these tools as black boxes meaning that no efforts have been made to retrain or fine-tune them. Evaluation is carried out on the test set of the Hungarian subset of the Universal Dependencies Corpus \citep{UniDep} which consists of a small, manually transcribed part of the Szeged Corpus. Performance measures are provided by the evaluation script of the CoNLL 2018 Shared Task\footnote{\url{https://universaldependencies.org/conll18/conll18_ud_eval.py}}.
+
+Up until now, there has  only been a single Hungarian corpus \citep{szegedcorpus} having both morphosyntactic and dependency parse annotations. What is more, UD annotations are available only in a rather small subcorpus of it \citep{UniDep}. While morphosyntactic labels can be transcribed automatically from the Hungarian-specific formalism to UD with high accuracy, the same is not true for dependency parse trees. Hence, there is a notable difference in size of the training data available for tagging and parsing.
+
+To best utilize all possible data sources, we applied a two-step learning strategy
+%\footnote{Our experiments are fully reproducible. Hyperparameters of the models lie in configuration files of the given repository.}
+using \huspacy\textquotesingle s multitask deep learning model. In the first step, the tagger and the SBD components are pre-trained on the full-size transcribed Szeged Corpus\footnote{When we refer to the Szeged Corpus as a training set, we mean all the sentences that are not part of the development or the test set of the Universal Dependencies corpus.}. This is followed by a fine-tuning step on the gold standard dataset where dependency annotations are also learned. A single step model relying solely on the UD data is also involved in our experiments to allow fair comparison with other tools. 
+%%\hl{A summary of hyperparameters can be found in Table X in Appendix X.}
+
+The lemmatizer has been trained with two configurations. First we used only the training set of the Hungarian UD corpus, then we allowed the tool to learn from the whole transcribed Szeged Corpus (except the sentences overlapping with either our test or development sets).
+
+As for benchmarking other pipelines, we only had to evaluate \emtsv, as the authors of \stanza{}\footnote{\url{https://stanfordnlp.github.io/stanza/performance.html}} and \udpipe{}\footnote{\url{https://ufal.mff.cuni.cz/udpipe/1/models}} have already published their tools\textquotesingle \space accuracy on all UD corpora. There are no such published scores available for \emtsv, thus we used the following configuration to produce UD-compatible output for evaluation: \texttt{emToken, emMorph, emLem, emTag, emmorph2ud, emDep, emConll}. While this tool can provide parse trees, their annotation schema is not compatible with that of the Universal Dependencies, hence, its output is not evaluable. We must also note that comparison with the \emtsv{}\textquotesingle s tagger and lemmatizer is not fair, as this tool was trained on a different train-test split which might conflict with ours. (There is a high chance that its training data overlaps with the sentences of our test set.)
+
+\section{Parsing results}
+
+\newlength{\lsz}
+\settowidth{\lsz}{Sentence splitting}
+\begin{table}
+\begin{center}
+\begin{tabular}{
+  l<{\hspace{1em}}
+  >{\centering\arraybackslash}m{\lsz}
+  >{\centering\arraybackslash}m{\lsz}
+}
+\toprule
+              & Tokenization             & Sentence splitting \\
+\midrule
+\stanza{}        & 99.87\%                  & 97.00\%            \\
+\udpipe{}        & 99.80\%                  & 95.90\%            \\
+\emtsv{}         & 99.77\%                  & 98.67\%            \\
+\huspacy{} (UD)  & \multirow{2}{*}{99.89\%} & 99.00\%            \\
+\huspacy{} (SZC) &                          & 98.01\%            \\  
+\bottomrule
+\end{tabular}
+\vspace{1em}
+\caption{Comparison of the tokenization and sentence boundary detection of NLP pipelines measured in F1 scores on the test of the Hungarian UD Corpus}
+\label{table:tokens}
+\end{center}
+\end{table}
+
+Error propagation is a notable phenomenon in language processing applications, thus using highly accurate preprocessing modules such as tokenization and SBD is indispensable. F1 scores in Table \ref{table:tokens}  suggest that tokenization is easily handled by all of the systems making only a few errors, although \huspacy{} is marginally better compared to the rest of the systems. Sentence boundary detection is a more complex task, where language specific knowledge is necessary. This can be either built into the system (as it is the case with \emtsv{}) or learned by a ML model. Numbers show that both approaches can yield high scoring systems.
+%\todo{@Zsolti: honnan lett 99\%-os SBD szamunk?}
+
+\newlength{\lm}
+\settowidth{\lm}{Morph. acc.}
+\begin{table}
+\begin{center}
+\begin{tabular}{
+    l<{\hspace{1em}}
+  >{\centering\arraybackslash}m{\lm}
+  >{\centering\arraybackslash}m{\lm}
+  >{\centering\arraybackslash}m{\lm}
+  >{\centering\arraybackslash}m{\lm}
+}
+\toprule
+              & PoS acc. & Morph. acc. & UAS   & LAS   \\
+\midrule
+\stanza{}        & 96.03\%      & 93.76\%               & 83.62\%   & 78.86\%   \\
+\udpipe{} v1     & 90.60\%      & 88.50\%               & 72.80\%   & 67.20\%   \\
+\emtsv{}         & 89.19\%      & 89.12\%              & \multicolumn{2}{c}{--\footnote{Although \emtsv can yield parse trees, its annotation schema is not compatible with our test set.}} \\
+\huspacy{} (UD)  & 94.87\%      & 89.49\%               & 79.77\%   & 69.96\%   \\
+\huspacy{} (SZC) & 96.65\%      & 93.19\%               & 80.09\%   & 71.02\%   \\
+\bottomrule
+\end{tabular}
+\vspace{1em}
+\caption{Comparison of NLP pipelines in part-of-speech and full morphosyntactic tagging accuracy with attachment scores for dependency parsing on the test set of the Hungarian UD Corpus.}
+\label{table:tagging}
+\end{center}
+\end{table}
+
+Part-of-speech, full morphosyntactic tagging accuracy and attachment scores are presented in Table \ref{table:tagging}. Results show that the overall performance of \huspacy{} and \stanza{} are close to each other. While the latter is better at PoS tagging, the former has significantly higher scores in dependency parsing and predicting morphosyntactic features. It can be seen that the usage of the extra silver standard data yields better performance, both during tagging and dependency parsing for HuSpaCy. \udpipe{} and \emtsv{} have remarkably lower scores compared to our system. While the first can be explained by the underlying simpler model, \emtsv{}\textquotesingle s results are surprising given that it is built upon state-of-the-art morphosyntactic tagging facilities \citep{purepos}. 
+%Our assumption is that there could be tag conversion compatibility issues which could cause such low scores. However, this hypothesis needs further investigation.
+
+
+\newlength{\llem}
+\settowidth{\llem}{Accuracy}
+\begin{table}
+\begin{center}
+\begin{tabular}{
+    l<{\hspace{1em}}
+  >{\centering\arraybackslash}m{\llem}
+}
+\toprule
+              & Accuracy \\
+\midrule
+\stanza{}        & 94.25\%    \\
+\udpipe{}        & 88.50\%    \\
+\udpipe{}         & 94.94\%    \\
+\huspacy{} (UD)  & 94.82\%    \\
+\huspacy{} (SZC) & 95.43\%    \\
+\bottomrule
+\end{tabular}
+\vspace{1em}
+\caption{Lemmatization accuracy of NLP pipelines measured on the test set of the Hungarian UD Corpus. \huspacy{} (UD) uses the same setting as its contenders, while \huspacy{} (SZC) uses the whole Szeged Corpus (except the sentences of the test set) for training.}
+\label{table:lemma}
+\end{center}
+\end{table}
+
+Lemmatization results in Table \ref{table:lemma} show that all the systems except \udpipe{} are accurate enough. \huspacy{} trained on the full Szeged Corpus stands out, its score is more than 0.5\% higher than the second best system (\emtsv{}). The best configuration of \huspacy{} system scores more than 0.5\% higher than the one trained solely on the UD dataset. 
+%This results confirms the usage of the additional training data.
+
+Resource usage such as memory consumption and processing speed is an important aspect of practical text processing systems, thus we benchmarked\footnote{All experiments were performed on a computer having an Intel Core i7-8750H CPU and 16 GB RAM running Ubuntu Linux 20.04 LTS.} all the NLP pipelines at hand in this respect. In order to have a fair comparison, we configured all of the systems to perform only tokenization, sentence splitting, PoS tagging, lemmatization and dependency parsing. As timing measurements should ignore model loading times, Stanza and \udpipe{} were used by their Python interfaces, while \emtsv{} was utilized using its dockerized version through its REST API. We used the same test set as above to measure throughput and peak memory consumption of the tools.
+
+%\todo{ezeket a szamokat jo lenne jobra rendezni}
+\newlength{\lper}
+\settowidth{\lper}{Throughput (tokens/sec)}
+\begin{table}
+\begin{center}
+\begin{tabular}{
+    l<{\hspace{1em}}
+  >{\centering\arraybackslash}m{\lper}
+  >{\centering\arraybackslash}m{\lper}
+}
+\toprule
+        & Throughput (tokens/sec) & Memory usage (GB) \\
+\midrule
+\stanza{}  & 222  & 0.9 \\
+\udpipe{}  & 1741 & 0.4 \\
+\emtsv{}   & 122  & 3.9 \\
+\huspacy{} & 2612 & 2.1 \\
+\bottomrule
+\end{tabular}
+\vspace{1em}
+\caption{Throughput (measured in tokens/second) and peak memory consumption of benchmarked NLP pipelines.}
+\label{table:performance}
+\end{center}
+\end{table}
+
+Table \ref{table:performance} 
+%\todo{Format numbers as it is the NerKor article} 
+presents computational efficiency measures of pipelines benchmarked. It can be seen that our system’s throughput is almost 50\% higher than that of the \udpipe{}, while producing significantly better parses. As regards Stanza, there is a huge tradeoff on having the best dependency parser: it is almost 8 times slower than \udpipe{} and more than 10 times slower compared to our system. 
+
+Memory consumption of the pipelines are acceptable as all of them could easily fit in a modern computer’s RAM. HuSpaCy has the highest memory usage which is due to the 300-dimensional word vectors shipped with the model. In comparison, Stanza is the only other tool having word embeddings, however its vectors' sizes are limited to 100.
+
+\section{NER experiments and results}
+
+Comparing named entity results is not as straightforward as it is for parsing subtasks. There are multiple evaluation datasets, but there is no consensus between researchers on their usage. NYTK-NerKor (NerKor) \citep{NerKor} is a relatively new corpus consisting of  1 million tokens, while SzegedNER \citep{szeged-ner-corpus} is a 200,000 token subset of the Szeged Corpus.  \citet{nerkor-eval} uses the former dataset to benchmark some of the most popular tools, while previous work mainly rely on the latter one.
+ \udpipe{} does not have a NER component, thus we cannot include it in this investigation. As for \emtsv, its entity recognizer was trained using the whole SzegedNER corpus, its comparison against other tools would not be fair.
+
+\huspacy\textquotesingle s entity recognition capabilities are benchmarked in this work on both corpora using the same train-test splits as \citet{szarvas-ner} and \citet{nerkor-eval} suggest. 
+As Hungarian entity recognition datasets share the same tagset and rely on similar annotation guides, it is possible to train models using both corpora. In this regards, we follow the work of \citet{nerkor-eval} and evaluate \huspacy{} on the combined corpus as well.
+We also include results of previous entity recognition attempts so as to put our results in context. One of the first systems was developed by \cite{szarvas-ner}, which utilizes decision trees for tackling the problem. Next, there is HunTag \citep{huntag, simon-ner}, which is a statistical tagger utilizing a linear model combined with Hidden Markov models. \citet{simon-ner} also showed that it is possible to improve on the F1 score of the base system by incorporating silver standard data. Most recently, \cite{embert} developed an entity recognizer on top of Hungarian BERT models \citep{hubert} achieving state-of-the-art results.
+
+\newlength{\lnersz}
+\settowidth{\lnersz}{SzegedNer}
+
+\begin{table}
+\begin{center}
+\begin{tabular}[t]{
+    l<{\hspace{1em}}
+  >{\centering\arraybackslash}m{\lnersz}
+  >{\centering\arraybackslash}m{\lnersz}
+  >{\centering\arraybackslash}m{\lnersz}
+}
+\toprule
+                           & SzegedNer & NerKor & Combined\\
+\midrule
+\cite{simon-ner}           & 95.06\%   & --      & -- \\
+\cite{szarvas-ner}         & 94.77\%\   & --      & -- \\
+\embert{}                  & 97.40\%   & 92.09\% & 92.99\% \\
+\stanza{}                  & 91.78\%   & 80.53\% & 83.75\% \\
+\huspacy{}                 & 95.31\%   & 80.75\% & 83.46\% \\
+\bottomrule
+\end{tabular}
+\vspace{1em}
+\caption{Comparison of entity recognition F1 scores on the SzegedNER test set \citep{szarvas-ner}, on the NerKor test set and on the combined test}
+\label{table:ner_cmp}
+\end{center}
+\hspace*{.1\linewidth}
+\end{table}
+
+Table \ref{table:ner_cmp} contains a detailed performance comparison of all the entity recognizers mentioned above. Results suggest that the BERT-based model achieves the highest scores on all of the datasets with a large margin. However, these models are also well-known for their enormous computational costs. \huspacy{} is the second best contender on SzegedNER, although its performance is on pair with \stanza{} on other datasets. \embert{}\textquotesingle s results are outstanding when NerKor is involved in the comparison. As \citeauthor{nerkor-eval} concludes these measurements are in accordance with similar English NER benchamrks (cf. \cite{stanza}). Pretrained transformer-based models often yield significantly higher performance scores compared to other sequence tagging approaches due to the underlying attention mechanism and the their model's increased capacity. But there is no free lunch, higher accuracy comes with significantly increased prediction costs. 
+%na ezt most jol idehanytam, mindenfele indoklas nelkul... :D
+
+
+\section{Conclusions}
+
+We presented \huspacy{}, a new industry-ready Hungarian language processing pipeline that is open source and is freely available. While previous approaches have failed to provide a tool which can be easily used to solve practical text processing problems, our system builds on the solid foundations of an industrial NLP framework. We presented how our toolkit utilizes spaCy\textquotesingle s underlying ML models to provide all the basic language analysis facilities with high-enough accuracy and efficient resource usage. We performed various experiments proving that our system has near state-of-the-art accuracy in many text processing tasks while using only moderate computation resources.
+
+As results show, the accuracy of \huspacy\textquotesingle s dependency parser needs further improvements. We plan to tackle this issue by fine-tuning the underlying model through hyperparameter optimization and by incorporating additional silver standard data. Further advancement opportunities lie in fine-tuning the NER model and in using a new neural lemmatizer similar to that of Stanza and TurkuNLP. 
+
+In summary, this study described a new freely available tool which is suitable for real-world industrial applications.
+
+
+
+% \newlength{\lparams}
+% \settowidth{\lparams}{SBD, tagger and parser}
+% \begin{table}
+% \begin{center}
+% \begin{tabular}{
+%     l<{\hspace{1em}}
+%   >{\centering\arraybackslash}m{\lparams}
+%   >{\centering\arraybackslash}m{\lparams}
+%   >{\centering\arraybackslash}m{\lparams}
+% }
+% \toprule
+%                       & SBD and tagger                  & SBD, tagger and parser                     & NER \\
+% \midrule
+% Batch size            & 256        & 256        & 1024       \\
+% Encoder width         & 300        & 300        & 128        \\
+% Encoder depth         & 4          & 4          & 4          \\
+% Encoder window size   & 1          & 1          & 1          \\
+% Encoder maxout pieces & 5          & 5          & 3          \\
+% Dropout               & 0.1        & 0.1        & 0.1        \\
+% Accumulate gradient   & 1          & 1          & 1          \\
+% Patience              & 1600       & 1600       & 50000      \\
+% Max epochs            & 0          & 0          & 200        \\
+% Max steps             & 20000      & 20000      & 0          \\
+% Optimizer             & Adam       & Adam       & Adam       \\
+% Beta1                 & 0.9        & 0.9        & 0.9        \\
+% Beta2                 & 0.999      & 0.999      & 0.999      \\
+% L2 is weight decay    & true       & true       & true       \\
+% L2                    & 0.01       & 0.01       & 0.01       \\
+% Gradient clipping     & 1.0        & 1.0        & 1.0        \\
+% Use averages          & false      & false      & false      \\
+% Eps                   & $1e^{-9}$  & $1e^{-9}$  & $1e^{-9}$  \\
+% Learn rate            & 0.001      & 0.001      & 0.001      \\
+% Tag accuracy          & 0.30       & 0.30       & 0.30       \\
+% POS accuracy          & 0.15       & 0.15       & 0.15       \\
+% Morph accuracy        & 0.15       & 0.15       & 0.15       \\
+% UAS                   & 0.15       & 0.15       & 0.15       \\
+% LAS                   & 0.15       & 0.15       & 0.15       \\
+% Sentences f           & 0.1        & 0.1        & 0          \\
+% Entities f            & 0          & 0          & 0.4        \\
+% Extra state tokens    &            & false      & false      \\
+% Hidden width          &            & 512        & 64         \\
+% Maxout pieces         &            & 3          & 2          \\
+% Use upper             &            & true       & true       \\
+% \bottomrule
+% \end{tabular}
+% \vspace{1em}
+% \caption{tmp}
+% \label{table:params}
+% \end{center}
+% \end{table}
+
+% \section*{Acknowledgements}
+% \label{Koszonet}
+
+
+% ---- Bibliography ----
+%
+%kulon bibtex fajl hasznalata
+\renewcommand\bibname{\refname}
+\renewcommand\bibname{References}
+%for papers written in English
+\bibliographystyle{splncsnat_en}
+\bibliography{mszny}
+
+\end{document}
