@@ -38,22 +38,29 @@
 
 \begin{document}
 
-%\pagestyle{myheadings}
-%\def\leftmark{{\rm XIV. Magyar Sz\'am\'\i t\'og\'epes Nyelv\'eszeti Konferencia}}
-%\def\rightmark{{\rm Szeged, 2018. január 18-19.}}
+\pagestyle{myheadings}
+\def\leftmark{{\rm XVIII. Magyar Sz\'am\'\i t\'og\'epes Nyelv\'eszeti Konferencia}}
+\def\rightmark{{\rm Szeged, 2022. január 27-28.}}
 
-%  \setcounter{page}{1}
+% \setcounter{page}{1}
+% \pagestyle{plain}
 
 \title{\huspacy: an industrial-strength Hungarian natural language processing toolkit}
-%a november 15-ig bekuldott verziobol kerjuk a szerzok adatait kihagyni
-%	\author{Orosz György\inst{1}, Farkas Richárd\inst{1}, Vincze Veronika\inst{1,2}\\
-% \institute{$^1$Szegedi Tudom\'anyegyetem, Informatikai Int\'ezet\break
-%Szeged, \'Arp\'ad t\'er 2.\break
-%$^2$MTA-SZTE Mesters\'eges Intelligencia Kutat\'ocsoport\break
-%Szeged, Tisza Lajos k\"or\'ut 103.\break 
-%\{zsibrita,rfarkas,vinczev\}@inf.u-szeged.hu\break
-%}
-%}
+
+\author{György Orosz\inst{1,2} \and
+    Zsolt Szántó\inst{1,2} \and \break
+    Péter Berkecz\inst{1,2} \and
+    Gergő Szabó\inst{1,2} \and
+    Farkas Richárd\inst{1,2}\\
+    \institute{
+        $^1$Artificial Intelligence National Laboratory \break
+        $^2$Institute of Informatics, University of Szeged\break
+        Szeged Árpád tér 2., H-6720
+    }
+    \email{gyorgy@orosz.link}\break
+    \email{\{szantozs,rfarkas\}@inf.u-szeged.hu}\break
+    \email{\{berkecz.peter,szabogergo.a\}@gmail.com}\break
+}
 
 \maketitle
 
@@ -148,7 +155,7 @@ Talking of Hungarian-specific pipelines, we must mention the contenders of the r
 Table \ref{table:systems} summarizes the landscape of the most important Hungarian language processing pipelines and show how they meet the requirements of today’s NLP applications. All in all, we can say that none of them is easily applicable in industrial settings.
 
 We present \huspacy{}, a new industry-ready Hungarian natural language processing toolkit\footnote{We implemented our pipeline in spaCy v3.x. Prior to this work, there were attempts (\url{https://github.com/oroszgy/spacy-hungarian-models}) to support Hungarian in this framework, but none of those releases are compatible with the tool’s current version.}. 
-It provides all the aforementioned basic text processing modules with high accuracy. The underlying models are optimized to be light on memory consumption and CPU usage. The presented tool is open source\footnote{The URL is to be shared in the final paper.} and is available under the permissive CC-BY-SA-4.0 license. Our system is built on top of spaCy’s infrastructure, thus extensive documentation, debugging tools, an ergonomic API and a flourishing ecosystem are already provided.
+It provides all the aforementioned basic text processing modules with high accuracy. The underlying models are optimized to be light on memory consumption and CPU usage. The presented tool is open source\footnote{\url{https://github.com/oroszgy/spacy-hungarian-models}} and is available under the permissive CC-BY-SA-4.0 license. Our system is built on top of spaCy’s infrastructure, thus extensive documentation, debugging tools, an ergonomic API and a flourishing ecosystem are already provided.
 
 \section{Pipeline steps}
 
