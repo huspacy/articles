@@ -47,19 +47,18 @@
 
 \title{\huspacy: an industrial-strength Hungarian natural language processing toolkit}
 
-\author{György Orosz\inst{1,2} \and
-    Zsolt Szántó\inst{1,2} \and \break
-    Péter Berkecz\inst{1,2} \and
-    Gergő Szabó\inst{1,2} \and
-    Farkas Richárd\inst{1,2}\\
-    \institute{
-        $^1$Artificial Intelligence National Laboratory \break
-        $^2$Institute of Informatics, University of Szeged\break
-        Szeged Árpád tér 2., H-6720
-    }
-    \email{gyorgy@orosz.link}\break
-    \email{\{szantozs,rfarkas\}@inf.u-szeged.hu}\break
-    \email{\{berkecz.peter,szabogergo.a\}@gmail.com}\break
+\author{
+György Orosz,
+Zsolt Szántó, \break
+Péter Berkecz,
+Gergő Szabó,
+Richárd Farkas\\
+\institute{
+    Institute of Informatics, University of Szeged\break
+    Szeged, Árpád tér 2., H-6720\\
+}
+\email{gyorgy@orosz.link}\break
+\email{\{szantozs,rfarkas\}@inf.u-szeged.hu}\break
 }
 
 \maketitle
@@ -155,7 +154,7 @@ Talking of Hungarian-specific pipelines, we must mention the contenders of the r
 Table \ref{table:systems} summarizes the landscape of the most important Hungarian language processing pipelines and show how they meet the requirements of today’s NLP applications. All in all, we can say that none of them is easily applicable in industrial settings.
 
 We present \huspacy{}, a new industry-ready Hungarian natural language processing toolkit\footnote{We implemented our pipeline in spaCy v3.x. Prior to this work, there were attempts (\url{https://github.com/oroszgy/spacy-hungarian-models}) to support Hungarian in this framework, but none of those releases are compatible with the tool’s current version.}. 
-It provides all the aforementioned basic text processing modules with high accuracy. The underlying models are optimized to be light on memory consumption and CPU usage. The presented tool is open source\footnote{\url{https://github.com/oroszgy/spacy-hungarian-models}} and is available under the permissive CC-BY-SA-4.0 license. Our system is built on top of spaCy’s infrastructure, thus extensive documentation, debugging tools, an ergonomic API and a flourishing ecosystem are already provided.
+It provides all the aforementioned basic text processing modules with high accuracy. The underlying models are optimized to be light on memory consumption and CPU usage. The presented tool is open source\footnote{\url{https://github.com/huspacy/huspacy}} and is available under the permissive CC-BY-SA-4.0 license. Our system is built on top of spaCy’s infrastructure, thus extensive documentation, debugging tools, an ergonomic API and a flourishing ecosystem are already provided.
 
 \section{Pipeline steps}
 
@@ -371,8 +370,6 @@ As results show, the accuracy of \huspacy\textquotesingle s dependency parser ne
 
 In summary, this study described a new freely available tool which is suitable for real-world industrial applications.
 
-
-
 % \newlength{\lparams}
 % \settowidth{\lparams}{SBD, tagger and parser}
 % \begin{table}
@@ -424,9 +421,9 @@ In summary, this study described a new freely available tool which is suitable f
 % \end{center}
 % \end{table}
 
-% \section*{Acknowledgements}
-% \label{Koszonet}
-
+\section*{Acknowledgements}
+%\label{Koszonet}
+HuSpaCy research and developments has been financed by the Ministry of Innovation and Technology NRDI Office within the framework of the Artificial Intelligence National Laboratory Program.
 
 % ---- Bibliography ----
 %
@@ -435,6 +432,6 @@ In summary, this study described a new freely available tool which is suitable f
 \renewcommand\bibname{References}
 %for papers written in English
 \bibliographystyle{splncsnat_en}
-\bibliography{references}
+\bibliography{main}
 
 \end{document}
