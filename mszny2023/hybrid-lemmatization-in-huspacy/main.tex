@@ -1,0 +1,468 @@
+\documentclass{llncs}
+
+\usepackage[a4paper,includeheadfoot,top=1.65in,bottom=1.65in,left=1.73in,hcentering]{geometry}
+\usepackage[pdftex]{graphicx}
+\usepackage[sectionbib]{natbib}
+
+\usepackage[utf8]{inputenc}
+\usepackage{t1enc}
+\usepackage{tikz-dependency}
+\usepackage{qtree}
+\usepackage{float}
+\restylefloat{figure}
+\usepackage{siunitx}
+\usepackage{tikz-qtree}
+\usepackage[english]{babel}
+\usepackage{todonotes}
+% \renewcommand\todo{\noop}
+\selectlanguage{english}
+
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\hypersetup{plainpages=false,
+            pageanchor=true,
+            colorlinks=true,
+            linkcolor=blue,
+            citecolor=blue,
+            anchorcolor=blue,
+            menucolor=blue,
+            filecolor=blue,
+            urlcolor=blue,
+            linktocpage=true,
+            breaklinks=true,
+            unicode=true}
+\usepackage{soul}
+
+\newcommand{\embert}{\texttt{emBERT}}
+\newcommand{\emtsv}{\texttt{emtsv}}
+\newcommand{\floret}{\texttt{floret}}
+\newcommand{\fasttext}{\texttt{fastText}}
+\newcommand{\hubert}{\texttt{huBERT}}
+\newcommand{\xlmroberta}{\texttt{XLM-Roberta}}
+\newcommand{\magyarlanc}{\texttt{magyarlanc}}
+\newcommand{\spacy}{spaCy}
+\newcommand{\udpipe}{UDPipe}
+\newcommand{\stanza}{Stanza}
+\newcommand{\huspacy}{HuSpaCy}
+\newcommand{\huntoken}{HunToken}
+\newcommand{\lemmy}{Lemmy}
+
+
+% \renewcommand\bibname{References}
+
+\begin{document}
+
+% \pagestyle{myheadings}
+% \def\leftmark{{\rm XIX. Magyar Sz\'am\'\i t\'og\'epes Nyelv\'eszeti Konferencia}}
+% \def\rightmark{{\rm Szeged, 2023. január 26-27.}}
+
+% \setcounter{page}{1}
+% \pagestyle{plain}
+
+\title{Hybrid lemmatization in HuSpaCy}
+
+
+\author{Péter Berkecz, György Orosz, Zsolt Szántó,\\
+Gergő Szabó, Richárd Farkas
+ \institute{Institute of Informatics, University of Szeged\break
+   2. Árpád tér, Szeged, Hungary\break
+
+\{berkecz,szantozs,gszabo,rfarkas\}@inf.u-szeged.hu\break
+gyorgy@orosz.link\break
+}
+}
+
+
+\maketitle
+
+\begin{abstract}
+Lemmatization is still not a trivial task for morphologically rich languages. Previous studies showed that hybrid architectures usually work better for these languages and can yield great results. This paper presents a hybrid lemmatizer utilizing both a neural model, dictionaries and hand-crafted rules. We introduce a hybrid architecture along with empirical results on a widely used Hungarian dataset. The presented methods are published as three HuSpaCy models.
+\end{abstract}
+
+\section{Introduction}
+
+Lemmatization is the process where the lemma - the dictionary form of a word - needs to be computed from an inflected word form. This can happen in various ways. One approach is that we are deriving the possible lemmata of a token using a morphological analyzer which relies on hand-crafted morphological rules then a statistical model is applied to disambiguate using the context. 
+On the other hand, end-to-end statistical lemmatizers are using a training corpus exclusively to learn the transformation rules and the context disambiguation in a single model. Hence, they can track the language evolution and fit domain variations if a training dataset is available.
+
+Several end-to-end statistical lemmatizers have been proposed \citep{muller-etal-2015-joint, udpipe} however, based on our experiments on the Hungarian subset of Universal Dependencies \citep{nivre2017universal}, they were not accurate enough on their own. Studies \citep{purepos,boudchiche2019hybrid} showed, that for morphologically rich languages hybrid architectures tend to perform better.
+
+In this paper, we propose the following three-step hybrid architecture: 
+\begin{enumerate}
+    \item a dictionary-based first step for unambiguous cases, where we just replace the token with the lemma if the traits are the same,
+    \item end-to-end statistical lemmatizer for the highest accuracy in ambiguous cases
+    \item hand-made rules for special cases where the statistical approach did not see enough examples.
+\end{enumerate}
+
+For end-to-end lemmatization, we investigated two algorithms that learn rules from training data, the Lemmy \citep{lemmy} and the Edit-tree Lemmatizer \citep{spacy-edit-tree}. Both of them use neural networks to find the best set of rules for a given word in a given context. We examined various word embedding and transformer-based networks to find the best-performing end-to-end lemmatizer for Hungarian.
+
+Our tool is built on spaCy's foundation and is both versatile and easy to use in a multi-language environment. It is conveniently released under a Creative Commons BY-SA 4.0 license, making it an attractive option for organizations looking to incorporate natural language processing capabilities into their systems without any licensing issues.
+
+Our hybrid lemmatizer is available in the open-source HuSpaCy toolkit, in the \texttt{medium}, \texttt{large}, and \texttt{transformer} models since version 3.4.
+
+\section{Related Work}
+
+\subsection{Lemmatizing in spaCy}
+
+spaCy \citep{spacy} is an industrial-strength natural language processing pipeline, which already supports lemmatization for nineteen languages. HuSpaCy \citep{HuSpaCy:2021} is a Python package supporting Hungarian models for spaCy. Three different models are available for the tool, with two different embedding types. The \texttt{medium} and \texttt{large} model uses static word vectors, while the \texttt{transformer} model relies on \hubert{} \citep{hubert}, a fine-tuned BERT \citep{https://doi.org/10.48550/arxiv.1810.04805} model for Hungarian. Up until now, HuSpaCy utilized a simple rule-learning algorithm it used a lemmatizer called Lemmy.
+
+There are three different built-in lemmatizers available in spaCy. The first is the ruled-based one. It uses hand-crafted rules and part-of-speech tags to make a lemma from a token. Four official spaCy models use this, English, French, Spanish, and Macedonian.
+
+The second type is a dictionary-based lemmatizer. It stores the tokens with their PoS tags, and it loads a lemma for a token during prediction. Only one official spaCy model uses this, the Catalan one.
+
+The third and newest one is the Edit-tree Lemmatizer, which is an end-to-end neural lemmatizer. Fourteen official spaCy models are using this, for example, Greek, Polish, Danish, German, and Finnish.
+
+\subsection{Hungarian Lemmatization Approaches}
+
+In Hungarian, there are several approaches to lemmatizing texts, for example, \magyarlanc{}  \citep{magyaralanc} and \emtsv{} \citep{emtsv1, emtsv2, emtsv3}. Both of them use symbolic methods to make lemma candidates and disambiguate between them based on the context of the word in another step. 
+
+The morphological parser in \magyarlanc{} generates lemma candidates based on KR \citep{tron2006annotation} grammatical rules and then uses the PurePOS part-of-speech tagger \citep{purepos} to select the correct one according to the sentence context.
+
+\emtsv{} is the result of a collective effort to integrate multiple existing NLP tasks into one application. For lemmatization, it uses the emMorph \citep{novak2016new,novak2014new} morphological analyzer to create a lemma, part-of-speech tag, and morphological description candidates, and the emTag (PurePOS) tagger to disambiguate between them. During prediction, it uses Hungarian rules \citep{novak2015model} for HFST \citep{hfst}, then from the pool of lemma candidates, it selects the most probable one using the PurePOS tagger. We must note that emMorph has a very restrictive license, thus it cannot be used freely in a commercial application.
+
+The lemmatizer of Stanza \citep{stanza} combines a dictionary-based lemmatizer with a neural Seq2Seq lemmatizer. The dictionary  is being used as a cache to predict lemmata quickly because the Seq2Seq lemmatizer is typically slower, this is also compiled from the training dataset.
+
+UDPipe \citep{udpipe} handles lemmatization as a sub-task of tagging. The system generates a rule from tokens and their lemmata based on the longest common subsequence of two words and then selects them as a classification task.
+
+\section{Methods}
+
+Various studies \citep{HuSpaCy:2021, cst-lemmatizer} have already shown how the different types of lemmatizers perform individually. In some cases of agglutinating languages, however, the best solution was usually achieved with a combination of these \citep{orosz2015hybrid}. In the following section, we present the methods we have selected for our architecture.
+
+\subsection{Lemmy}
+
+Lemmy is an end-to-end statistical lemmatizer. It is an open-source Python implementation of the CST algorithm \citep{cst-lemmatizer}. This method automatically learns rules from the training data by detecting prefixes and suffixes to be transformed, so that the resulting token can be used to generate the lemma. First, it tries to lemmatize based on the existing rules, if this fails, it creates a new rule using their longest common subsequence and their differences. It creates a rule based on the token and its lemma’s longest common subsequence, and stores this and the token’s PoS-tag with the rule occurrence count. It had a few modifications over the original project to improve its accuracy. During prediction, it uses this frequency information and the predicted PoS-tag to select a rule, then applies it to the token to compute the lemma.
+
+\subsection{Edit-tree Lemmatizer}
+
+The Edit-tree Lemmatizer is another end-to-end statistical lemmatizer that exploits neural language models. It is a spaCy implementation of the Lemming lemmatizer \citep{muller-etal-2015-joint}, which learns rules (called edit-trees) from the training data to transform a word into its lemma. 
+
+For example, this system builds an edit-tree for the word \textit{leghosszabb} (longest) this way:
+
+\begin{enumerate}
+    \item Search for the longest common subsequence (LCS) between the token and its lemma: \textit{leghosszabb} - \textit{hosszú} (long)
+    \item Based on this, it splits into 3 parts, prefix - LCS - suffix
+    \item Finds the necessary transformations for the prefix and suffix to transform the inflected form into the lemma
+    \begin{enumerate}
+        \item In the prefix, we change \textit{leg-} into an empty string ($\epsilon$)
+        \item In the suffix, we change \textit{-abb} into \textit{-ú}
+    \end{enumerate}
+\end{enumerate}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.6\textwidth]{edit-tree-fig.pdf}
+  \caption{Edit-tree for the word \textit{leghosszabb}}
+  \label{fig:edit-tree}
+\end{figure}
+
+When predicting, a neural network is used as a classifier to select the right edit-tree. In spaCy we can use multi-task learning and this can be inserted as a task, thus being able to access hidden representations in the underlying neural network. This way, for example, the tagger and the lemmatizer can work together in an even closer relationship, not just on the few tags that the tagger predicts.
+
+\subsection{Hungarian Language Models Used} \label{neuralnetbehind}
+
+The architecture of HuSpaCy \citep{HuSpaCy:2021} consisted of a Word2Vec \citep{word2vec} static word embedding and CNN layers. The disadvantage of Word2Vec is that it only knows the words it saw during training and does not use the context information of the tokens. 
+
+To overcome these drawbacks, we experimented with word embeddings containing subword information and context-aware transformer networks. 
+
+Static word embeddings containing subword information (e.g. \fasttext{} \citep{bojanowski2017enriching}) learn not just a single word during training, but several small parts of a word. This way, because a token is a sum of its character \textit{n-gram} vectors, it performs better for words outside the vocabulary (OOV), be it a truly unknown word or a typo. It has the advantage of having a small storage footprint due to the smaller vocabulary size and because of that, it is quite fast when evaluated on the CPU. In our experiments, we have utilized \floret{} \citep{floret} which is the spaCy fork of the \fasttext. We trained two models on the Hungarian WebCorpus 2.0 \citep{Nemeskey:2020}, a 100-dimensional and a 300-dimensional one. The advantage of them is that they include character n-grams, and due to the hashing trick of \floret, their storage size is much smaller than the original word embeddings.
+
+On the other hand, transformer models (e.g. \texttt{BERT}) are able to take the full sentence context of the word into consideration when predicting, and thus can give a more accurate representation and achieve a high level of accuracy in HuSpaCy \citep{gergo}. Their disadvantages are their large storage size and relatively slow CPU evaluation, but with GPU it can be fast.
+
+\subsection{Lookup Lemmatizer}
+
+Dictionary-based lemmatizers only perform a simple replacement operation. They “learn” to map tokens to lemmata from the training dataset by memorizing a word form with their morphosyntactic information associated with lemmata. If more than one lemma is associated with the same word with the same morphosyntactic labels, the most frequent one is learned. In prediction time, they simply return the matching lemmata if any. The disadvantage is that it can only lemmatize tokens that it has already seen. 
+
+\subsection{Postprocessing Rules} \label{rules}
+
+There may be cases where the lemmatizer makes mistakes and these cases can be easily corrected by rules. These special hand-crafted rules are most often used when something has to be cut off the end of a token to get the correct lemma. You could actually call it the little brother of stemming. Beyond suffix cutting, these rules are also useful in certain cases for agglutinating languages.
+
+We noticed that in a few rare cases where there are exclamation and question marks in a token they were left in a lemma, thus we’ve built a rule to remove them. Also, there were some numbers and dates that needed to be fixed. For example, for the token \textit{4-6-os} the lemmatizers usually made \textit{4-6-} as a lemma, but \textit{4-6} would be the correct one. Because the predicted lemmata had unrecognizable patterns, this rule used the original token to remove any suffixes after a number or a date.
+
+\section{Results}
+
+\subsection{Experimental Setup}
+
+To ensure comparability, we have used the most commonly available tools for training and testing. The evaluations were carried out on the test set of the Hungarian Universal Dependencies (UD) \citep{nivre2017universal} corpus using the CoNLL 2018 Shared Task \citep{conll-2018} evaluator script\footnote{\url{https://universaldependencies.org/conll18/conll18_ud_eval.py}}.
+
+For training, we used parts of the Szeged Korpusz \citep{szegedcorpus} that are not included in any part of the UD corpus. As for the comparison, we chose the most popular open-source tools and used them as they were published for reproducibility.
+
+\subsection{Experiments}
+
+Lemmy was used in HuSpaCy, but it only relied on the part-of-speech information and did not have any other information about the token. The Edit-tree Lemmatizer was released in spaCy 3.3. Studies \citep{spacy-edit-tree} showed that it brings significant improvements for various languages, hence we investigated its usage for Hungarian (cf. Table \ref{table:baseline}). 
+
+\newlength{\ltbaseline}
+\settowidth{\ltbaseline}{Edit-tree Lemmatizer}
+\begin{table}
+	\begin{center}
+		\begin{tabular}{
+			>{\centering\arraybackslash}m{\ltbaseline}
+			>{\centering\arraybackslash}m{\ltbaseline}
+			}
+			\toprule
+			                  Lemmy & Edit-tree Lemmatizer \\
+			\midrule
+                     95.53\% & 95.90\% \\
+			\bottomrule
+		\end{tabular}
+		\vspace{1em}
+		\caption{Results of the previous Lemmy lemmatizer and the Edit-tree Lemmatizer with the default configurations. We consider this as the baseline.}
+		\label{table:baseline}
+	\end{center}
+	\vspace{-3em}
+\end{table}
+
+As we have shown in subsection \ref{neuralnetbehind}, the underlying neural language model can be simply replaced by another spaCy-compatible module. The Word2Vec word embeddings previously shipped with HuSpacy models were replaced by a \floret{} \citep{floret} architecture. This not only improves our results but also reduces the storage requirements of the whole model.
+
+We experimented with pretrained transformer language models as well. Based on our experiments (cf. Table \ref{table:new-models}), \hubert{} \citep{hubert} gave a good accuracy-to-speed ratio, but with an \xlmroberta\texttt{-Large} \citep{https://doi.org/10.48550/arxiv.1911.02116} model we were able to achieve even higher accuracy at the expense of throughput.
+
+\newlength{\ltnew}
+\settowidth{\ltnew}{\floret (100d)}
+\newlength{\ltroberta}
+\settowidth{\ltroberta}{\xlmroberta}
+\begin{table}
+	\begin{center}
+		\begin{tabular}{
+			>{\centering\arraybackslash}m{\ltnew}
+			>{\centering\arraybackslash}m{\ltnew}
+			>{\centering\arraybackslash}m{\ltnew}
+			>{\centering\arraybackslash}m{\ltroberta}
+			}
+			\toprule
+			      \floret (100d)& \floret (300d) & \hubert & \xlmroberta \\
+			\midrule
+                     96.56\% & 96.76\% & 98.53\% & 98.89\% \\
+			\bottomrule
+		\end{tabular}
+		\vspace{1em}
+		\caption{Results of the Edit-tree Lemmatizer with different language models.}
+		\label{table:new-models}
+	\end{center}
+	\vspace{-3em}
+\end{table}
+
+The Edit-tree Lemmatizer has an important hyperparameter, which controls the number of edit-trees to try before giving up and choosing another one of the token's properties as a lemma. It defaults to 1, but increasing this value improved the accuracy. By adjusting this, the model can access more edit-tree candidates during prediction because the possible edit-tree is chosen from all of them. Increasing it to 3 improves the result (cf. Table \ref{table:topk}) even though the pipeline is slower, but it's a worthy compromise. A higher \texttt{top\_k} value makes the algorithm a bit slower (cf. Table \ref{table:topk-speed}) and has almost no effect on the results. Because of this, we've choosen 3 as our \texttt{top\_k} value for the next experiments.
+
+\newlength{\lttopk}
+\settowidth{\lttopk}{\floret (100d)}
+\begin{table}
+	\begin{center}
+		\begin{tabular}{
+			>{\centering\arraybackslash}l{\lttopk}
+			>{\centering\arraybackslash}m{\lttopk}
+			>{\centering\arraybackslash}m{\lttopk}
+			>{\centering\arraybackslash}m{\lttopk}
+			>{\centering\arraybackslash}m{\ltroberta}
+			}
+			\toprule
+			       & \floret (100d)& \floret (300d) & \hubert & \xlmroberta \\
+			\midrule
+                     \texttt{top\_k} = 1 & 96.56\% & 96.76\% & 98.53\% & 98.89\% \\
+                     \texttt{top\_k} = 3 & 96.87\% & 97.01\% & 98.63\% & 98.93\% \\
+                     \texttt{top\_k} = 8 & 96.84\% & 97.09\% & 98.61\% & 98.83\% \\
+			\bottomrule
+		\end{tabular}
+		\vspace{1em}
+		\caption{Lemma accuracies of the Edit-tree Lemmatizer with increased \texttt{top\_k} parameters.}
+		\label{table:topk}
+	\end{center}
+	\vspace{-3em}
+\end{table}
+
+\begin{table}
+	\begin{center}
+            \vspace{-3em}
+		\begin{tabular}{
+			>{\centering\arraybackslash}l{\lttopk}
+			>{\centering\arraybackslash}m{\lttopk}
+			>{\centering\arraybackslash}m{\lttopk}
+			>{\centering\arraybackslash}m{\lttopk}
+			>{\centering\arraybackslash}m{\ltroberta}
+			}
+			\toprule
+			       & \floret (100d)& \floret (300d) & \hubert & \xlmroberta \\
+			\midrule
+                     \texttt{top\_k} = 1 & 7739 & 7255 & 3349 & 2429 \\
+                     \texttt{top\_k} = 3 & 6740 & 6873 & 3166 & 2358 \\
+                     \texttt{top\_k} = 8 & 6655 & 6571 & 3146 & 2347 \\
+			\bottomrule
+		\end{tabular}
+		\vspace{1em}
+		\caption{Throughput (token/s) of the Edit-tree Lemmatizer with increased \texttt{top\_k} parameters.}
+		\label{table:topk-speed}
+	\end{center}
+	\vspace{-3em}
+\end{table}
+
+In Lemmy, it was already noticeable that the casing of some words was wrong, this problem was also apparent here. So the same rule had to be built into the system (cf. Table \ref{table:etl-casing}). If the word is a proper noun or the first token of a sentence, it can start with a capital letter, in all other cases, the word is lowercase. We built this in so that the algorithm can be aware of these casings during training so that it can apply them later during prediction.
+
+\newlength{\ltetlcasing}
+\settowidth{\ltetlcasing}{\floret (100d)}
+\begin{table}
+	\begin{center}
+		\begin{tabular}{
+			>{\centering\arraybackslash}l{\ltlookup}
+			>{\centering\arraybackslash}m{\ltetlcasing}
+			>{\centering\arraybackslash}m{\ltetlcasing}
+			>{\centering\arraybackslash}m{\ltetlcasing}
+			>{\centering\arraybackslash}m{\ltroberta}
+			}
+			\toprule
+			     & \floret (100d)& \floret (300d) & \hubert & \xlmroberta \\
+			\midrule
+                   + Casing & 96.29\% & 97.23\% & 98.63\% & 98.85\% \\
+			\bottomrule
+		\end{tabular}
+		\vspace{1em}
+		\caption{Results of the Edit-tree Lemmatizer taking casing into account.}
+		\label{table:etl-casing}
+	\end{center}
+	\vspace{-3em}
+\end{table}
+
+\subsubsection{Hybrid Lemmatizer Results}
+
+Since the Edit-tree Lemmatizer doesn't give any prediction sometimes, we tested how a dictionary-based lemmatizer performs as a supplement. This became the second part of our architecture, but it became a pipeline step before the Edit-tree Lemmatizer in the whole spaCy pipeline. 
+
+We had two experiments with this setup, the first was about pairing the training data to the lemmata based on the token and PoS tag (cf. Table \ref{table:lookup-rules}). However, this led to many incorrect predictions. Finally, to solve this, we paired the training data to the lemmata to be trained based on the token, the PoS-tag, and the morphological tags. During training and prediction, the number-like tokens are masked, resulting in fewer pairs, but this will match more tokens containing numbers. It can generalize better with this because for example the \textit{1000-ben} will be \textit{0000-ben} and it could be applied to \textit{3000-ben} which may not have been included in the training set.
+
+In a couple of cases, even combined -- the dictionary-based lemmatizer with the Edit-tree Lemmatizer -- they still made some errors, and we used post-processing rules to try to correct the lemma in the ways that we mention in subsection \ref{rules}. Upon implementation of these rules, the accuracies demonstrated a slight decrease, however, the overall quality of the predicted lemmata  showed noticeable improvement. 
+
+\newlength{\ltlookup}
+\settowidth{\ltlookup}{\floret (100d)}
+\begin{table}
+	\begin{center}
+		\begin{tabular}{
+			>{\centering\arraybackslash}l{\ltlookup}
+			>{\centering\arraybackslash}m{\ltlookup}
+			>{\centering\arraybackslash}m{\ltlookup}
+			>{\centering\arraybackslash}m{\ltlookup}
+			>{\centering\arraybackslash}m{\ltroberta}
+			}
+			\toprule
+			       & \floret (100d)& \floret (300d) & \hubert & \xlmroberta \\
+			\midrule
+                     + Lookup & 97.19\% & 97.48\% & 98.68\% & 98.94\% \\
+                     + Rules & 97.17\% & 97.46\% & 98.68\% & 98.94\% \\
+			\bottomrule
+		\end{tabular}
+		\vspace{1em}
+		\caption{Results of the hybrid architecture. The rows are an addition to the existing system. It can be observed that the transformer-based models were not really helped by the hybrid additions, but the floret-based models were. This is due to the fact that the larger models are more adept at selecting the edit-trees.}
+		\label{table:lookup-rules}
+	\end{center}
+	\vspace{-3em}
+\end{table}
+
+\subsection{Final Results}
+
+In order to compare our architecture's results with already existing systems, we chose three popular systems that have built-in lemmatizers. \emtsv{} is a Hungarian pipeline of state-of-the-art NLP components, \udpipe{} is commonly used as a baseline in CoNLL competitions, and \stanza{} has relatively high scores on UD test sets. It is important to point out that all of them were used off-the-shelf, i.e. not re-trained or fine-tuned.
+
+The evaluation was performed on the Hungarian Universal Dependencies test set. The \udpipe{} and \stanza{} authors have made the results of their systems available, but the \emtsv{} authors have not, so we used one of the default configurations to get UD-compatible output and then evaluate it. It is important to point out that comparing \emtsv's lemmatizer is probably not fair out-of-the-box, because the tool was trained on a different train-test split, which may conflict with ours. (There is a high probability that their training set contains sentences in our test set.)
+
+\newlength{\ltcompare}
+\settowidth{\ltcompare}{Accuracy}
+\begin{table}
+	\begin{center}
+		\begin{tabular}{
+			l<{\hspace{1em}}
+			>{\centering\arraybackslash}m{\ltcompare}
+			}
+			\toprule
+			                 & Accuracy \\
+   \midrule
+                Word2Vec \textit{baseline} & 95.90\% \\
+   \midrule
+			HuSpaCy + \floret{} (100d) & 97.17\%  \\
+			HuSpaCy + \floret{} (300d) & 97.46\%  \\
+			HuSpaCy + \hubert{}        & 98.68\%  \\
+			HuSpaCy + \xlmroberta{}    & 98.94\%  \\
+   \midrule
+                \emtsv{}  & 96.16\% \\
+                \udpipe{} & 88.50\% \\
+                \stanza{} & 94.19\% \\
+			\bottomrule
+		\end{tabular}
+		\vspace{1em}
+		\caption{Lemmatization accuracies of the different NLP pipelines.}
+		\label{table:compare}
+	\end{center}
+	\vspace{-3em}
+\end{table}
+
+In Table \ref{table:compare} one can see that all systems are quite accurate except \udpipe{}. Our hybrid lemmatizer consistently outperforms other systems, demonstrating a marked improvement in performance.
+
+\subsection{Resource Usage}
+
+It is also important to mention the resource usage of our models. These models contain a complete language pipeline, i.e. a single model of a system. In the case of HuSpaCy, these models include tagger, morphologizer, lemmatizer, parser, and named entity recognition.
+
+\newlength{\ltres}
+\settowidth{\ltres}{Storage Size}
+\begin{table}
+	\begin{center}
+		\begin{tabular}{
+			l<{\hspace{1em}}
+			>{\centering\arraybackslash}m{\ltres}
+			>{\centering\arraybackslash}m{\ltres}
+			>{\centering\arraybackslash}m{\ltres}
+			>{\centering\arraybackslash}m{\ltres}
+			}
+			\toprule
+			                 & Storage Size  &  Throughput (tokens/sec) CPU &  Throughput (tokens/sec) GPU & Memory Usage (GiB)\\
+			\midrule
+			Word2Vec \textit{baseline} & 1.6 GB &  854 & 7059 &  4.61 \\
+   \midrule
+			HuSpaCy + \floret{} (100d) & 125 MB & 1862 & 5903 &  2.35 \\
+			HuSpaCy + \floret{} (300d) & 455 MB & 1186 & 6074 &  3.33 \\
+			HuSpaCy + \hubert{}        & 1.8 GB &  242 & 3055 &  4.84 \\
+			HuSpaCy + \xlmroberta{}    & 9.1 GB &   78 & 2186 & 17.87 \\
+   \midrule
+                \emtsv{}  & 3.6 GB &  116 &   - & 3.91 \\
+                \udpipe{} &   5 MB & 3175 &   - & 1.38 \\
+                \stanza{} & 246 MB &   30 & 395 & 5.31 \\
+			\bottomrule
+		\end{tabular}
+		\vspace{1em}
+		\caption{Resource usages of the different models. The storage sizes contain a full natural language processing pipeline, not just the lemmatizer. During measurement, we've tried to run every benchmark three times, and take the best result with each tool. For each tool, we've tried to use only the parts that are needed to the lemmatizer, in the case of our models this means that we've run them without named entity recognition. We measured the throughput using an AMD EPYC 7F72 CPU and NVIDIA A100 (40GB) GPU.}
+		\label{table:resource}
+	\end{center}
+	\vspace{-3em}
+\end{table}
+
+Table \ref{table:resource} shows that the results do not really correlate with the storage requirements of a model. This is mostly due to the language model, as can be seen in the case of the Word2Vec model, which is 1.6GB but is outperformed by a 125MB model in accuracy. However, the two models use completely different word embeddings, while Word2Vec uses a continuous bag-of-words model, \floret{} uses CBOW with subword information but also hashes words so it is a bit slower. 
+
+For both \xlmroberta-based and \hubert-based, we can see that the 5x storage requirement is almost unnecessary, with the result being only a few tenths of a percentage point better.
+
+We must note that at \emtsv{} it is the size of a Docker image which is a recommended way to use the tool, thus it may contain parts that are not part of the original \emtsv{} pipeline.
+
+\section{Conclusions}
+
+We presented a hybrid architecture, which consists of three parts utilizing the advantages of neural language model-based statistical lemmatizers and dictionaries along with hand-crafted rules. We have shown the application of hand-crafted rules and morphological information-based dictionaries can improve end-to-end statistical lemmatizers. We examined different language models and we found the \xlmroberta\texttt{-large} model achieves the best results, but the five times smaller \hubert{} reached comparable results too.  We performed multiple experiments to extensively compare our tool with other systems. As the results show, our lemmatizer outperforms other models and the storage requirement is smaller with the smaller \floret{} model than some of them. 
+
+Altogether, this paper has presented a new hybrid lemmatizer architecture that is freely available in three models of HuSpaCy. We made it open-source, under a permissive license.
+
+
+
+
+
+
+
+
+
+
+
+
+\section*{Acknowledgements}
+%\label{Koszonet}
+The authors would like to thank Dávid Nemeskey and Dániel Lévai for their help in benchmarking \embert{} and \stanza{}.
+HuSpaCy research and development is supported by the European Union project RRF-2.3.1-21-2022-00004 within the framework of the Artificial Intelligence National Laboratory.
+
+% ---- Bibliography ----
+%
+%kulon bibtex fajl hasznalata
+\renewcommand\bibname{\refname}
+\renewcommand\bibname{References}
+%for papers written in English
+\bibliographystyle{splncsnat_en}
+\bibliography{main}
+
+\end{document}
