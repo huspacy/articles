@@ -1,0 +1,1422 @@
+@preamble{ " \newcommand{\noop}[1]{} " } % a do-nothing command that serves a purpose
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Corpora %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@inproceedings{hundeptreebank,
+    title = "{H}ungarian Dependency Treebank",
+    author = {Vincze, Veronika  and
+      Szauter, D{\'o}ra  and
+      Alm{\'a}si, Attila  and
+      M{\'o}ra, Gy{\"o}rgy  and
+      Alexin, Zolt{\'a}n  and
+      Csirik, J{\'a}nos},
+    booktitle = "Proceedings of the Seventh International Conference on Language Resources and Evaluation ({LREC}'10)",
+    month = may,
+    year = "2010",
+    address = "Valletta, Malta",
+    publisher = "European Language Resources Association (ELRA)",
+    url = "http://www.lrec-conf.org/proceedings/lrec2010/pdf/465_Paper.pdf",
+    abstract = "Herein, we present the process of developing the first Hungarian Dependency TreeBank. First, short references are made to dependency grammars we considered important in the development of our Treebank. Second, mention is made of existing dependency corpora for other languages. Third, we present the steps of converting the Szeged Treebank into dependency-tree format: from the originally phrase-structured treebank, we produced dependency trees by automatic conversion, checked and corrected them thereby creating the first manually annotated dependency corpus for Hungarian. We also go into detail about the two major sets of problems, i.e. coordination and predicative nouns and adjectives. Fourth, we give statistics on the treebank: by now, we have completed the annotation of business news, newspaper articles, legal texts and texts in informatics, at the same time, we are planning to convert the entire corpus into dependency tree format. Finally, we give some hints on the applicability of the system: the present database may be utilized ― among others ― in information extraction and machine translation as well.",
+}
+
+@inproceedings{szegedcorpus,
+    author = {Csendes, D\'{o}ra and Csirik, J\'{a}nos and Gyim\'{o}thy, Tibor},
+    booktitle = {{Proceedings of the 5th International Workshop on Linguistically Interpreted Corpora LINC 2004 at The 20th International Conference on Computational Linguistics COLING 2004}},
+    pages = {19--23},
+    title = {{The Szeged Corpus: A POS tagged and syntactically annotated Hungarian natural language corpus}},
+    year = {2004}
+}
+
+@article{UniDep,
+    author = {de Marneffe, Marie-Catherine and Manning, Christopher D. and Nivre, Joakim and Zeman, Daniel},
+    title = "{Universal Dependencies}",
+    journal = {Computational Linguistics},
+    volume = {47},
+    number = {2},
+    pages = {255-308},
+    year = {2021},
+    month = {07},
+    abstract = "{Universal dependencies (UD) is a framework for morphosyntactic annotation of human language, which to date has been used to create treebanks for more than 100 languages. In this article, we outline the linguistic theory of the UD framework, which draws on a long tradition of typologically oriented grammatical theories. Grammatical relations between words are centrally used to explain how predicate–argument structures are encoded morphosyntactically in different languages while morphological features and part-of-speech classes give the properties of words. We argue that this theory is a good basis for crosslinguistically consistent annotation of typologically diverse languages in a way that supports computational natural language understanding as well as broader linguistic studies.}",
+    issn = {0891-2017},
+    doi = {10.1162/coli_a_00402},
+    url = {https://doi.org/10.1162/coli\_a\_00402},
+    eprint = {https://direct.mit.edu/coli/article-pdf/47/2/255/1938138/coli\_a\_00402.pdf},
+}
+
+@inproceedings{unimorph,
+    title = "{U}ni{M}orph 3.0: {U}niversal {M}orphology",
+    author = "McCarthy, Arya D.  and
+      Kirov, Christo  and
+      Grella, Matteo  and
+      Nidhi, Amrit  and
+      Xia, Patrick  and
+      Gorman, Kyle  and
+      Vylomova, Ekaterina  and
+      Mielke, Sabrina J.  and
+      Nicolai, Garrett  and
+      Silfverberg, Miikka  and
+      Arkhangelskiy, Timofey  and
+      Krizhanovsky, Nataly  and
+      Krizhanovsky, Andrew  and
+      Klyachko, Elena  and
+      Sorokin, Alexey  and
+      Mansfield, John  and
+      Ern{\v{s}}treits, Valts  and
+      Pinter, Yuval  and
+      Jacobs, Cassandra L.  and
+      Cotterell, Ryan  and
+      Hulden, Mans  and
+      Yarowsky, David",
+    booktitle = "Proceedings of the 12th Language Resources and Evaluation Conference",
+    month = may,
+    year = "2020",
+    address = "Marseille, France",
+    publisher = "European Language Resources Association",
+    url = "https://aclanthology.org/2020.lrec-1.483",
+    pages = "3922--3931",
+    abstract = "The Universal Morphology (UniMorph) project is a collaborative effort providing broad-coverage instantiated normalized morphological paradigms for hundreds of diverse world languages. The project comprises two major thrusts: a language-independent feature schema for rich morphological annotation and a type-level resource of annotated data in diverse languages realizing that schema. We have implemented several improvements to the extraction pipeline which creates most of our data, so that it is both more complete and more correct. We have added 66 new languages, as well as new parts of speech for 12 languages. We have also amended the schema in several ways. Finally, we present three new community tools: two to validate data for resource creators, and one to make morphological data available from the command line. UniMorph is based at the Center for Language and Speech Processing (CLSP) at Johns Hopkins University in Baltimore, Maryland. This paper details advances made to the schema, tooling, and dissemination of project resources since the UniMorph 2.0 release described at LREC 2018.",
+    language = "English",
+    ISBN = "979-10-95546-34-4",
+}
+
+
+@Article{msd-tagset,
+    author="Erjavec, Toma{\v{z}}",
+    title="MULTEXT-East: morphosyntactic resources for Central and Eastern European languages",
+    journal="Language Resources and Evaluation",
+    year="2012",
+    month="Mar",
+    day="01",
+    volume="46",
+    number="1",
+    pages="131--142",
+    issn="1574-0218",
+    doi="10.1007/s10579-011-9174-8",
+    url="https://doi.org/10.1007/s10579-011-9174-8"
+}
+
+@article{penntreebank,
+    author = {Marcus, Mitchell P. and Marcinkiewicz, Mary Ann and Santorini, Beatrice},
+    title = {Building a Large Annotated Corpus of English: The Penn Treebank},
+    year = {1993},
+    issue_date = {June 1993},
+    publisher = {MIT Press},
+    address = {Cambridge, MA, USA},
+    volume = {19},
+    number = {2},
+    issn = {0891-2017},
+    journal = {Comput. Linguist.},
+    month = {jun},
+    pages = {313–330},
+    numpages = {18}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Spacy %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@online{spacy,
+    author = {Honnibal, Matthew},
+    title = {{Introducing spaCy}},
+    url = {https://explosion.ai/blog/introducing-spacy},
+    month = {Feb},
+    year = {2015},
+    urldate = {2021-11-17}
+}
+
+@online{spacy-tokenization,
+    author = {Honnibal, Matthew},
+    title = {{Tokenization - spaCy Usage Documentation}},
+    month = {Nov},
+    year = {2021},
+    url = {https://spacy.io/usage/linguistic-features},
+    urldate = {2021-11-17}
+}
+
+@online{spacy-neural-model,
+    author = {Honnibal, Matthew},
+    title = {{Embed, encode, attend, predict: The new deep learning formula for state-of-the-art NLP models}},
+    url = {https://explosion.ai/blog/deep-learning-formula-nlp},
+    month = {Nov},
+    year = {2016},
+    urldate = {2021-11-17}
+}
+
+@inproceedings{spacy-parser,
+    title = "A Non-Monotonic Arc-Eager Transition System for Dependency Parsing",
+    author = "Honnibal, Matthew  and
+      Goldberg, Yoav  and
+      Johnson, Mark",
+    booktitle = "Proceedings of the Seventeenth Conference on Computational Natural Language Learning",
+    month = aug,
+    year = "2013",
+    address = "Sofia, Bulgaria",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/W13-3518",
+    pages = "163--172",
+}
+
+@online{spacy-parser2,
+author = {Honnibal, Matthew},
+title = {Multi-task CNN for parser, tagger and NER (Issue \#1057)},
+url = {https://github.com/explosion/spaCy/issues/1057},
+month = {May},
+year = {2017},
+urldate = {2021-11-21}
+}
+
+@misc{spacy-ner,
+      title={{Neural Architectures for Named Entity Recognition}}, 
+      author={Guillaume Lample and Miguel Ballesteros and Sandeep Subramanian and Kazuya Kawakami and Chris Dyer},
+      year={2016},
+      eprint={1603.01360},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Other tools %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Tokenization %%%%%
+@online{huntoken,
+    author = {Németh, László and Zséder, Attila},
+    title = {huntoken: word and sentence tokenizer},
+    url = {https://github.com/zseder/huntoken},
+    year = {2013},
+    urldate = {2021-11-17}
+}
+
+%%%% Morph / Pos %%%%
+
+@inproceedings{cst-lemmatizer,
+    author = {Jongejan, Bart and Dalianis, Hercules},
+    booktitle = {{Joint conference of the 47th Annual Meeting of the Association for Computational Linguistics and the 4th International Joint Conference on Natural Language Processing of the Asian Federation of Natural Language Processing}},
+    isbn = {978-1-932432-45-9},
+    pages = {145--153},
+    title = {{Automatic training of lemmatization rules that handle morphological changes in pre- , in- and suffixes alike}},
+    year = {2009}
+}
+
+@online{lemmy,
+    author = {Kristiansen, Søren Lind},
+    title = {{lemmy: Lemmy a lemmatizer for Danish and Swedish}},
+    url = {https://github.com/sorenlind/lemmy},
+    month = {Apr},
+    year = {2019},
+    urldate = {2021-11-17}
+}
+
+
+@inproceedings{purepos,
+keywords = {own},
+  address = {{Hissar, Bulgaria}},
+  title = {{PurePos 2.0: a hybrid tool for morphological disambiguation}},
+  booktitle = {{Proceedings of the International Conference on Recent Advances in Natural Language Processing (RANLP 2013)}},
+  publisher = {{INCOMA Ltd. Shoumen}},
+  author = {Orosz, Gy\"{o}rgy and Nov\'{a}k, Attila},
+  year = {2013},
+  pages = {539{\textendash}545},
+}
+
+@inproceedings{humor,
+	author = "Attila Nov{\'a}k",
+	booktitle = "{Magyar Sz{\'a}m{\'i}t{\'o}g{\'e}pes Nyelv{\'e}szeti Konferencia 2003}",
+	location = "{Szeged}",
+	pages = "138--145.",
+	title = "{Milyen a j{\'o} humor?}",
+	year = "2003"
+}
+
+@techreport{humor-tagset,
+	author = {Attila Novák},
+	title = {{Description of the format and semantics of the output of the present version of the Hungarian Humor analyzer}},
+	institution = {{MorphoLogic Ltd.}},
+	address = {{Budapest, Hungary}},
+	year = {2003}
+}
+
+@inproceedings{hunpos,
+	address = "Prague, Czech Republic",
+	author = "Hal{\'a}csy, P{\'e}ter and Kornai, Andr{\'a}s and Oravecz, Csaba",
+	booktitle = {{Proceedings of the 45th Annual Meeting of the ACL on Interactive Poster and Demonstration Sessions}},
+	pages = "209--212",
+	publisher = "Association for Computational Linguistics",
+	title = {{HunPos: an open source trigram tagger}},
+	year = "2007"
+}
+
+@inproceedings{magyaralanc,
+    author = "Zsibrita, János and Vincze, Veronika and Farkas, Richárd",
+    booktitle = {{Proceedings of Recent Advances in Natural Language Provessing 2013}},
+    organization = {{Association for Computational Linguistics}},
+    address   = {Hissar, Bulgaria},
+    pages = {763--771},
+    title = {{magyarlanc: A Toolkit for Morphological and Dependency Parsing of Hungarian}},
+    year = "2013"
+}
+
+@inproceedings{hunmorph,
+    title = "{H}unmorph: Open Source Word Analysis",
+    author = {Tr{\'o}n, Viktor  and
+      Gyepesi, Gy{\"o}gy  and
+      Hal{\'a}csky, P{\'e}ter  and
+      Kornai, Andr{\'a}s  and
+      N{\'e}meth, L{\'a}szl{\'o}  and
+      Varga, D{\'a}niel},
+    booktitle = "Proceedings of Workshop on Software",
+    month = jun,
+    year = "2005",
+    address = "Ann Arbor, Michigan",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/W05-1106",
+    pages = "77--85",
+}
+
+@inproceedings{morphdb,
+    title = "{M}orphdb.hu: {H}ungarian lexical database and morphological grammar",
+    author = "Tr{\'o}n, Viktor  and
+      Hal{\'a}csy, P{\'e}ter  and
+      Rebrus, P{\'e}ter  and
+      Rung, Andr{\'a}s  and
+      Vajda, P{\'e}ter  and
+      Simon, Eszter",
+    booktitle = "Proceedings of the Fifth International Conference on Language Resources and Evaluation ({LREC}{'}06)",
+    month = may,
+    year = "2006",
+    address = "Genoa, Italy",
+    publisher = "European Language Resources Association (ELRA)",
+    url = "http://www.lrec-conf.org/proceedings/lrec2006/pdf/683_pdf.pdf",
+    abstract = "This paper describes morphdb.hu, a Hungarian lexical database and morphological grammar. Morphdb.hu is the outcome of a several-year collaborative effort and represents the resource with the widest coverage and broadest range of applicability presently available for Hungarian. The grammar resource is the formalization of well-founded theoretical decisions handling inflection and productive derivation. The lexical database was created by merging three independent lexical databases, and the resulting resource was further extended.",
+}
+
+
+%%%%%% emtsv %%%%%%
+@inproceedings{emtsv1,
+    author = {Simon, Eszter and Indig, Bal{\'a}zs and Kalivoda, {\'A}gnes and Mittelholcz Iv{\'a}n, Sass  B{\'a}lint and Vad{\'a}sz, No{\'e}mi},
+    title = {Újabb fejlemények az \texttt{e-magyar} háza táján},
+    booktitle = {XVI. Magyar Sz{\'a}m{\'\i}t{\'o}g{\'e}pes Nyelv{\'e}szeti Konferencia},
+    editor = {Berend, G{\'a}bor and Gosztolya, G{\'a}bor and Vincze, Veronika},
+    address = {Szeged},
+    publisher = {Szegedi Tudományegyetem Informatikai Tanszékcsoport},
+    pages = {29-42},
+    year={2020}
+}
+
+@inproceedings{emtsv2,
+    title = {One format to rule them all {--} The \texttt{emtsv} pipeline for {H}ungarian},
+    author = {Indig, Bal{\'a}zs and Sass, B{\'a}lint and Simon, Eszter and Mittelholcz, Iv{\'a}n and
+ Vad{\'a}sz, No{\'e}mi  and Makrai, M{\'a}rton},
+    booktitle = {Proceedings of the 13th Linguistic Annotation Workshop},
+    month = {aug},
+    year = {2019},
+    address = {Florence, Italy},
+    url = {https://www.aclweb.org/anthology/W19-4018},
+    doi = {10.18653/v1/W19-4018},
+    publisher = {Association for Computational Linguistics},
+    pages = {155--165},
+    abstract = {We present a more efficient version of the e-magyar NLP pipeline for Hungarian called emtsv.
+     It integrates Hungarian NLP tools in a framework whose individual modules can be developed or replaced
+     independently and allows new ones to be added. The design also allows convenient investigation and manual
+     correction of the data flow from one module to another. The improvements we publish include effective
+     communication between the modules and support of the use of individual modules both in the chain and standing
+     alone. Our goals are accomplished using extended tsv (tab separated values) files, a simple, uniform, generic and
+     self-documenting input/output format. Our vision is maintaining the system for a long time and making it easier
+     for external developers to fit their own modules into the system, thus sharing existing competencies in the field
+     of processing Hungarian, a mid-resourced language. The source code is available under LGPL 3.0 license
+     at https://github.com/dlt-rilmta/emtsv .},
+}
+
+@inproceedings{emtsv3,
+    author = {Indig, Balázs and Sass, Bálint and Simon, Eszter and Mittelholcz, Iván and Kundráth, Péter and
+     Vadász, Noémi},
+    title = {\texttt{emtsv} –- Egy formátum mind felett},
+    booktitle = {XV. Magyar Számítógépes Nyelvészeti Konferencia (MSZNY 2019)},
+    editor = {Gábor Berend and Gábor Gosztolya and Veronika Vincze},
+    address = {Szeged},
+    publisher = {Szegedi Tudományegyetem Informatikai Tanszékcsoport},
+    pages = {235-247},
+    year = {2019}
+}
+
+@inproceedings{emagyar1,
+    author = {Tamás Váradi and Eszter Simon and Bálint Sass and Iván Mittelholcz and Attila Novák and Balázs Indig and
+     Richárd Farkas and Veronika Vincze},
+    title = {{E-magyar -- A Digital Language Processing System}},
+    booktitle = {Proceedings of the Eleventh International Conference on Language Resources and Evaluation (LREC 2018)},
+    year = {2018},
+    month = {May 7-12, 2018},
+    address = {Miyazaki, Japan},
+    editor = {Nicoletta Calzolari (Conference chair) and Khalid Choukri and Christopher Cieri and Thierry Declerck and
+     Sara Goggi and Koiti Hasida and Hitoshi Isahara and Bente Maegaard and Joseph Mariani and Hélène Mazo and
+     Asuncion Moreno and Jan Odijk and Stelios Piperidis and Takenobu Tokunaga},
+    publisher = {European Language Resources Association (ELRA)},
+    isbn = {979-10-95546-00-9},
+    language = {english}
+}
+
+@inproceedings{emagyar2,
+    author = {V{\'a}radi, Tam{\'a}s and Simon, Eszter and Sass, B{\'a}lint and Ger{\H{o}}cs, M{\'a}ty{\'a}s and
+     Mittelholtz, Iv{\'a}n and Nov{\'a}k, Attila and Indig, Bal{\'a}zs and Pr{\'o}sz{\'e}ky, G{\'a}bor and
+     Vincze, Veronika},
+    title = {Az e-magyar digit{\'a}lis nyelvfeldolgoz{\'o} rendszer},
+    booktitle = {XIII. Magyar Számítógépes Nyelvészeti Konferencia (MSZNY 2017)},
+    editor = {Gábor Berend and Gábor Gosztolya and Veronika Vincze},
+    address = {Szeged},
+    publisher = {Szegedi Tudom{\'a}nyegyetem Informatikai Tansz{\'e}kcsoport},
+    pages = {49--60},
+    year = {2017},
+}
+
+
+%%%%%% NER %%%%%%
+@InProceedings{embert,
+  author = {Nemeskey, Dávid Márk},
+  title = {Egy \texttt{emBERT} próbáló feladat},
+  booktitle = {{XVI}.\ Magyar Sz{\'a}m{\'i}t{\'o}g{\'e}pes Nyelv{\'e}szeti Konferencia ({MSZNY}2020)},
+  year = 2020,
+  pages = {409--418},
+  address = {Szeged},
+}
+
+@PhDThesis{hubert,                                                 
+  author = {Nemeskey, Dávid Márk},
+  title  = {Natural Language Processing Methods for Language Modeling},
+  year   = {2020},
+  school = {E\"otv\"os Lor\'and University}
+}
+
+@inproceedings{szarvas-ner,
+  title={{A multilingual named entity recognition system using boosting and C4.5 decision tree learning algorithms}},
+  author={Szarvas, Gy{\"o}rgy and Farkas, Rich{\'a}rd and Kocsor, Andr{\'a}s},
+  booktitle={International Conference on Discovery Science},
+  pages={267--278},
+  year={2006},
+  organization={Springer}
+}
+
+@article{huntag,
+    author={Recski, G\'abor and D\'aniel Varga},
+    title={{A Hungarian NP Chunker}},
+    journal = {The Odd Yearbook. ELTE SEAS Undergraduate Papers in Linguistics},
+    publisher = {ELTE {S}chool of {E}nglish and {A}merican {S}tudies},
+    city = {Budapest},
+    pages= {87--93},
+    year={2009}
+}
+
+@phdthesis{simon-ner,
+  author       = {Simon, Eszter}, 
+  title        = {Approaches to Hungarian Named Entity Recognition},
+  school       = {PhD School in Cognitive Sciences, Budapest University of Technology and Economics},
+  year         = 2013
+}
+
+@article{varga-ner, 
+    title={Hungarian named entity recognition with a maximum entropy approach}, 
+    volume={18}, 
+    url={https://cyber.bibl.u-szeged.hu/index.php/actcybern/article/view/3720},
+    number={2}, 
+    journal={Acta Cybernetica}, 
+    author={Varga, Dániel and Simon, Eszter},
+    year={2007}, 
+    month={Jan.}, 
+    pages={293-301} 
+}
+
+%%% Conll %%%%
+@inproceedings{conll-2017,
+    title = "{C}o{NLL} 2017 Shared Task: Multilingual Parsing from Raw Text to {U}niversal {D}ependencies",
+    author = {Zeman, Daniel  and
+      Popel, Martin  and
+      Straka, Milan  and
+      Haji{\v{c}}, Jan  and
+      Nivre, Joakim  and
+      Ginter, Filip  and
+      Luotolahti, Juhani  and
+      Pyysalo, Sampo  and
+      Petrov, Slav  and
+      Potthast, Martin  and
+      Tyers, Francis  and
+      Badmaeva, Elena  and
+      Gokirmak, Memduh  and
+      Nedoluzhko, Anna  and
+      Cinkov{\'a}, Silvie  and
+      Haji{\v{c}} jr., Jan  and
+      Hlav{\'a}{\v{c}}ov{\'a}, Jaroslava  and
+      Kettnerov{\'a}, V{\'a}clava  and
+      Ure{\v{s}}ov{\'a}, Zde{\v{n}}ka  and
+      Kanerva, Jenna  and
+      Ojala, Stina  and
+      Missil{\"a}, Anna  and
+      Manning, Christopher D.  and
+      Schuster, Sebastian  and
+      Reddy, Siva  and
+      Taji, Dima  and
+      Habash, Nizar  and
+      Leung, Herman  and
+      de Marneffe, Marie-Catherine  and
+      Sanguinetti, Manuela  and
+      Simi, Maria  and
+      Kanayama, Hiroshi  and
+      de Paiva, Valeria  and
+      Droganova, Kira  and
+      Mart{\'\i}nez Alonso, H{\'e}ctor  and
+      {\c{C}}{\"o}ltekin, {\c{C}}a{\u{g}}r{\i}  and
+      Sulubacak, Umut  and
+      Uszkoreit, Hans  and
+      Macketanz, Vivien  and
+      Burchardt, Aljoscha  and
+      Harris, Kim  and
+      Marheinecke, Katrin  and
+      Rehm, Georg  and
+      Kayadelen, Tolga  and
+      Attia, Mohammed  and
+      Elkahky, Ali  and
+      Yu, Zhuoran  and
+      Pitler, Emily  and
+      Lertpradit, Saran  and
+      Mandl, Michael  and
+      Kirchner, Jesse  and
+      Alcalde, Hector Fernandez  and
+      Strnadov{\'a}, Jana  and
+      Banerjee, Esha  and
+      Manurung, Ruli  and
+      Stella, Antonio  and
+      Shimada, Atsuko  and
+      Kwak, Sookyoung  and
+      Mendon{\c{c}}a, Gustavo  and
+      Lando, Tatiana  and
+      Nitisaroj, Rattima  and
+      Li, Josie},
+    booktitle = "Proceedings of the {C}o{NLL} 2017 Shared Task: Multilingual Parsing from Raw Text to Universal Dependencies",
+    month = aug,
+    year = "2017",
+    address = "Vancouver, Canada",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/K17-3001",
+    doi = "10.18653/v1/K17-3001",
+    pages = "1--19",
+}
+
+@inproceedings{conll-2018,
+    title = "{C}o{NLL} 2018 Shared Task: Multilingual Parsing from Raw Text to {U}niversal {D}ependencies",
+    author = "Zeman, Daniel  and
+      Haji{\v{c}}, Jan  and
+      Popel, Martin  and
+      Potthast, Martin  and
+      Straka, Milan  and
+      Ginter, Filip  and
+      Nivre, Joakim  and
+      Petrov, Slav",
+    booktitle = "Proceedings of the {C}o{NLL} 2018 Shared Task: Multilingual Parsing from Raw Text to Universal Dependencies",
+    month = oct,
+    year = "2018",
+    address = "Brussels, Belgium",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/K18-2001",
+    doi = "10.18653/v1/K18-2001",
+    pages = "1--21",
+}
+
+@inproceedings{stanza,
+    title={Stanza: A {Python} Natural Language Processing Toolkit for Many Human Languages},
+    author={Qi, Peng and Zhang, Yuhao and Zhang, Yuhui and Bolton, Jason and Manning, Christopher D.},
+    booktitle = "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics: System Demonstrations",
+    year={2020}
+}
+
+@InProceedings{udpipe,
+    title = "{UDP}ipe 2.0 Prototype at {C}o{NLL} 2018 {UD} Shared Task",
+    author = "Straka, Milan",
+    booktitle = "Proceedings of the {C}o{NLL} 2018 Shared Task: Multilingual Parsing from Raw Text to Universal Dependencies",
+    month = oct,
+    year = "2018",
+    address = "Brussels, Belgium",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/K18-2020",
+    doi = "10.18653/v1/K18-2020",
+    pages = "197--207",
+}
+
+@inproceedings{turkunlp,
+    author = {Jenna Kanerva and Filip Ginter and Niko Miekka and Akseli Leino and Tapio Salakoski},
+    title = {Turku Neural Parser Pipeline: An End-to-End System for the CoNLL 2018 Shared Task},
+    booktitle = {Proceedings of the CoNLL 2018 Shared Task: Multilingual Parsing from Raw Text to Universal Dependencies},
+    publisher = "Association for Computational Linguistics",
+    location = "Brussels, Belgium",
+    year={2018}
+}
+
+
+%%%%% Other %%%%%%
+
+@inproceedings{gensim,
+      title = {{Software Framework for Topic Modelling with Large Corpora}},
+      author = {Radim {\v R}eh{\r u}{\v r}ek and Petr Sojka},
+      booktitle = {{Proceedings of the LREC 2010 Workshop on New
+           Challenges for NLP Frameworks}},
+      pages = {45--50},
+      year = 2010,
+      month = May,
+      day = 22,
+      publisher = {ELRA},
+      address = {Valletta, Malta},
+      language={English}
+}
+
+@misc{word2vec,
+      title={Efficient Estimation of Word Representations in Vector Space}, 
+      author={Tomas Mikolov and Kai Chen and Greg Corrado and Jeffrey Dean},
+      year={2013},
+      eprint={1301.3781},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+
+@ARTICLE{cnn,  
+    author={Lecun, Y. and Bottou, L. and Bengio, Y. and Haffner, P.}, 
+    journal={Proceedings of the IEEE}, 
+    title={Gradient-based learning applied to document recognition},
+    year={1998},  
+    volume={86},  
+    number={11}, 
+    pages={2278-2324}, 
+    doi={10.1109/5.726791}
+}
+
+%%%% NER corpora
+
+@inproceedings{HunWebCorpus,
+    title = "Creating Open Language Resources for {H}ungarian",
+    author = "Hal{\'a}csy, P{\'e}ter  and
+      Kornai, Andr{\'a}s  and
+      N{\'e}meth, L{\'a}szl{\'o}  and
+      Rung, Andr{\'a}s  and
+      Szakad{\'a}t, Istv{\'a}n  and
+      Tr{\'o}n, Viktor",
+    booktitle = "Proceedings of the Fourth International Conference on Language Resources and Evaluation ({LREC}{'}04)",
+    month = may,
+    year = "2004",
+    address = "Lisbon, Portugal",
+    publisher = "European Language Resources Association (ELRA)",
+    url = "http://www.lrec-conf.org/proceedings/lrec2004/pdf/525.pdf",
+}
+
+@inproceedings{NerKor,
+  author    = {Eszter Simon and
+               No{\'{e}}mi Vad{\'{a}}sz},
+  editor    = {Kamil Ekstein and
+               Frantisek P{\'{a}}rtl and
+               Miloslav Konop{\'{\i}}k},
+  title     = {Introducing NYTK-NerKor, {A} Gold Standard Hungarian Named Entity
+               Annotated Corpus},
+  booktitle = {Text, Speech, and Dialogue - 24th International Conference, {TSD}
+               2021, Olomouc, Czech Republic, September 6-9, 2021, Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {12848},
+  pages     = {222--234},
+  publisher = {Springer},
+  year      = {2021},
+  doi       = {10.1007/978-3-030-83527-9\_19},
+}
+
+@inproceedings{szeged-ner-corpus,
+    title = "A highly accurate Named Entity corpus for {H}ungarian",
+    author = {Szarvas, Gy{\"o}rgy  and
+      Farkas, Rich{\'a}rd  and
+      Felf{\"o}ldi, L{\'a}szl{\'o}  and
+      Kocsor, Andr{\'a}s  and
+      Csirik, J{\'a}nos},
+    booktitle = "Proceedings of the Fifth International Conference on Language Resources and Evaluation ({LREC}{'}06)",
+    month = may,
+    year = "2006",
+    address = "Genoa, Italy",
+    publisher = "European Language Resources Association (ELRA)",
+    url = "http://www.lrec-conf.org/proceedings/lrec2006/pdf/365_pdf.pdf",
+}
+
+@book{metanet,
+  author = {Simon, E. and Lendvai, P. and Németh, G. and Olaszy, G. and Vicsi, K.},
+  title = {{A magyar nyelv a digitális korban – The Hungarian Language in the
+    Digital Age}},
+  publisher = {Springer},
+  year = {2012},
+  series = {Georg Rehm and Hans Uszkoreit (Series Editors): META-NET White Paper Series},
+}
+
+@article{nlp-trends,  
+    author={Young, Tom and Hazarika, Devamanyu and Poria, Soujanya and Cambria, Erik},  
+    journal={IEEE Computational Intelligence Magazine},   
+    title={{Recent Trends in Deep Learning Based Natural Language Processing}},   
+    year={2018}, 
+    volume={13}, 
+    number={3},  
+    pages={55-75},  
+    doi={10.1109/MCI.2018.2840738}
+}
+
+@misc{nerkor-eval,
+  title = {{Az NYTK-NerKor több szempontú kiértékelése}},
+  booktitle = {{XVIII. Magyar Sz\'{a}m\'{\i}t\'{o}g\'{e}pes Nyelv\'{e}szeti Konferencia}},
+  author = {Simon, Eszter and Vadász, Noémi and Lévai, Dániel and Nemeskey, Dávid and  Szántó, Zsolt and Orosz, György}, 
+  year = {\noop{3002}in press 2021},
+},
+
+@inproceedings{udpos,
+    title = "A Universal Part-of-Speech Tagset",
+    author = "Petrov, Slav  and
+      Das, Dipanjan  and
+      McDonald, Ryan",
+    booktitle = "Proceedings of the Eighth International Conference on Language Resources and Evaluation ({LREC}'12)",
+    month = may,
+    year = "2012",
+    address = "Istanbul, Turkey",
+    publisher = "European Language Resources Association (ELRA)",
+    url = "http://www.lrec-conf.org/proceedings/lrec2012/pdf/274_Paper.pdf",
+    pages = "2089--2096",
+}
+
+@inproceedings{univedepv1,
+    title = "{U}niversal {D}ependencies v1: A Multilingual Treebank Collection",
+    author = "Nivre, Joakim  and
+      de Marneffe, Marie-Catherine  and
+      Ginter, Filip  and
+      Goldberg, Yoav  and
+      Haji{\v{c}}, Jan  and
+      Manning, Christopher D.  and
+      McDonald, Ryan  and
+      Petrov, Slav  and
+      Pyysalo, Sampo  and
+      Silveira, Natalia  and
+      Tsarfaty, Reut  and
+      Zeman, Daniel",
+    booktitle = "Proceedings of the Tenth International Conference on Language Resources and Evaluation ({LREC}'16)",
+    month = may,
+    year = "2016",
+    address = "Portoro{\v{z}}, Slovenia",
+    publisher = "European Language Resources Association (ELRA)",
+    url = "https://aclanthology.org/L16-1262",
+    pages = "1659--1666",
+}
+
+@article{boudchiche2019hybrid,
+  title={A hybrid approach for Arabic lemmatization},
+  author={Boudchiche, Mohamed and Mazroui, Azzeddine},
+  journal={International Journal of Speech Technology},
+  volume={22},
+  number={3},
+  pages={563--573},
+  year={2019},
+  publisher={Springer}
+}
+
+@misc{HuSpaCy:2021,
+  title = {{HuSpaCy: an industrial-strength Hungarian natural language processing toolkit}},
+  booktitle = {{XVIII. Magyar Sz{\'a}m{\'\i}t{\'o}g{\'e}pes Nyelv{\'e}szeti Konferencia}},
+  author = {Orosz, Gy{\"o}rgy and Sz{\' a}nt{\' o}, Zsolt and Berkecz, P{\' e}ter and Szab{\' o}, Gerg{\H o} and Farkas, Rich{\' a}rd}, 
+  location = {{Szeged}},
+  year = {2022},
+}
+
+@inproceedings{10.1007/11551874_16,
+  author    = {Csendes, D{\'o}ra
+               and Csirik, J{\'a}nos
+               and Gyim{\'o}thy, Tibor
+               and Kocsor, Andr{\'a}s},
+  editor    = {Matou{\v{s}}ek, V{\'a}clav
+               and Mautner, Pavel
+               and Pavelka, Tom{\'a}{\v{s}}},
+  title     = {The Szeged Treebank},
+  booktitle = {Text, Speech and Dialogue},
+  year      = {2005},
+  publisher = {Springer Berlin Heidelberg},
+  address   = {Berlin, Heidelberg},
+  pages     = {123--131},
+  abstract  = {The major aim of the Szeged Treebank project was to create a high-quality database of syntactic structures for Hungarian that can serve as a golden standard to further research in linguistics and computational language processing. The treebank currently contains full syntactic parsing of about 82,000 sentences, which is the result of accurate manual annotation. Current paper describes the linguistic theory as well as the actual method used in the annotation process. In addition, the application of the treebank for the training of automated syntactic parsers is also presented.},
+  isbn      = {978-3-540-31817-0}
+}
+
+@article{belkin2018reconciling,
+  title   = {Reconciling modern machine learning practice and the bias-variance trade-off},
+  author  = {Belkin, Mikhail and Hsu, Daniel and Ma, Siyuan and Mandal, Soumik},
+  journal = {arXiv preprint arXiv:1812.11118},
+  year    = {2018}
+}
+
+@article{bojanowski2017enriching,
+  title   = {Enriching Word Vectors with Subword Information},
+  author  = {Bojanowski, Piotr and Grave, Edouard and Joulin, Armand and Mikolov, Tomas},
+  journal = {Transactions of the Association for Computational Linguistics},
+  volume  = {5},
+  year    = {2017},
+  issn    = {2307-387X},
+  pages   = {135--146}
+}
+
+@article{cnn,
+  author  = {Lecun, Y. and Bottou, L. and Bengio, Y. and Haffner, P.},
+  journal = {Proceedings of the IEEE},
+  title   = {Gradient-based learning applied to document recognition},
+  year    = {1998},
+  volume  = {86},
+  number  = {11},
+  pages   = {2278-2324},
+  doi     = {10.1109/5.726791}
+}
+
+@inproceedings{conll-2017,
+  title     = {{C}o{NLL} 2017 Shared Task: Multilingual Parsing from Raw Text to {U}niversal {D}ependencies},
+  author    = {Zeman, Daniel  and
+               Popel, Martin  and
+               Straka, Milan  and
+               Haji{\v{c}}, Jan  and
+               Nivre, Joakim  and
+               Ginter, Filip  and
+               Luotolahti, Juhani  and
+               Pyysalo, Sampo  and
+               Petrov, Slav  and
+               Potthast, Martin  and
+               Tyers, Francis  and
+               Badmaeva, Elena  and
+               Gokirmak, Memduh  and
+               Nedoluzhko, Anna  and
+               Cinkov{\'a}, Silvie  and
+               Haji{\v{c}} jr., Jan  and
+               Hlav{\'a}{\v{c}}ov{\'a}, Jaroslava  and
+               Kettnerov{\'a}, V{\'a}clava  and
+               Ure{\v{s}}ov{\'a}, Zde{\v{n}}ka  and
+               Kanerva, Jenna  and
+               Ojala, Stina  and
+               Missil{\"a}, Anna  and
+               Manning, Christopher D.  and
+               Schuster, Sebastian  and
+               Reddy, Siva  and
+               Taji, Dima  and
+               Habash, Nizar  and
+               Leung, Herman  and
+               de Marneffe, Marie-Catherine  and
+               Sanguinetti, Manuela  and
+               Simi, Maria  and
+               Kanayama, Hiroshi  and
+               de Paiva, Valeria  and
+               Droganova, Kira  and
+               Mart{\'\i}nez Alonso, H{\'e}ctor  and
+               {\c{C}}{\"o}ltekin, {\c{C}}a{\u{g}}r{\i}  and
+               Sulubacak, Umut  and
+               Uszkoreit, Hans  and
+               Macketanz, Vivien  and
+               Burchardt, Aljoscha  and
+               Harris, Kim  and
+               Marheinecke, Katrin  and
+               Rehm, Georg  and
+               Kayadelen, Tolga  and
+               Attia, Mohammed  and
+               Elkahky, Ali  and
+               Yu, Zhuoran  and
+               Pitler, Emily  and
+               Lertpradit, Saran  and
+               Mandl, Michael  and
+               Kirchner, Jesse  and
+               Alcalde, Hector Fernandez  and
+               Strnadov{\'a}, Jana  and
+               Banerjee, Esha  and
+               Manurung, Ruli  and
+               Stella, Antonio  and
+               Shimada, Atsuko  and
+               Kwak, Sookyoung  and
+               Mendon{\c{c}}a, Gustavo  and
+               Lando, Tatiana  and
+               Nitisaroj, Rattima  and
+               Li, Josie},
+  booktitle = {Proceedings of the {C}o{NLL} 2017 Shared Task: Multilingual Parsing from Raw Text to Universal Dependencies},
+  month     = aug,
+  year      = {2017},
+  address   = {Vancouver, Canada},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/K17-3001},
+  doi       = {10.18653/v1/K17-3001},
+  pages     = {1--19}
+}
+
+@inproceedings{conll-2018,
+  title     = {{C}o{NLL} 2018 Shared Task: Multilingual Parsing from Raw Text to {U}niversal {D}ependencies},
+  author    = {Zeman, Daniel  and
+               Haji{\v{c}}, Jan  and
+               Popel, Martin  and
+               Potthast, Martin  and
+               Straka, Milan  and
+               Ginter, Filip  and
+               Nivre, Joakim  and
+               Petrov, Slav},
+  booktitle = {Proceedings of the {C}o{NLL} 2018 Shared Task: Multilingual Parsing from Raw Text to Universal Dependencies},
+  month     = oct,
+  year      = {2018},
+  address   = {Brussels, Belgium},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/K18-2001},
+  doi       = {10.18653/v1/K18-2001},
+  pages     = {1--21}
+}
+
+@inproceedings{cst-lemmatizer,
+  author    = {Jongejan, Bart and Dalianis, Hercules},
+  booktitle = {{Joint conference of the 47th Annual Meeting of the Association for Computational Linguistics and the 4th International Joint Conference on Natural Language Processing of the Asian Federation of Natural Language Processing}},
+  isbn      = {978-1-932432-45-9},
+  pages     = {145--153},
+  title     = {{Automatic training of lemmatization rules that handle morphological changes in pre- , in- and suffixes alike}},
+  year      = {2009}
+}
+
+@inproceedings{emagyar1,
+  author    = {Tamás Váradi and Eszter Simon and Bálint Sass and Iván Mittelholcz and Attila Novák and Balázs Indig and
+               Richárd Farkas and Veronika Vincze},
+  title     = {{E-magyar -- A Digital Language Processing System}},
+  booktitle = {Proceedings of the Eleventh International Conference on Language Resources and Evaluation (LREC 2018)},
+  year      = {2018},
+  month     = {May 7-12, 2018},
+  address   = {Miyazaki, Japan},
+  editor    = {Nicoletta Calzolari (Conference chair) and Khalid Choukri and Christopher Cieri and Thierry Declerck and
+               Sara Goggi and Koiti Hasida and Hitoshi Isahara and Bente Maegaard and Joseph Mariani and Hélène Mazo and
+               Asuncion Moreno and Jan Odijk and Stelios Piperidis and Takenobu Tokunaga},
+  publisher = {European Language Resources Association (ELRA)},
+  isbn      = {979-10-95546-00-9},
+  language  = {english}
+}
+
+@inproceedings{emagyar2,
+  author    = {V{\'a}radi, Tam{\'a}s and Simon, Eszter and Sass, B{\'a}lint and Ger{\H{o}}cs, M{\'a}ty{\'a}s and
+               Mittelholtz, Iv{\'a}n and Nov{\'a}k, Attila and Indig, Bal{\'a}zs and Pr{\'o}sz{\'e}ky, G{\'a}bor and
+               Vincze, Veronika},
+  title     = {Az e-magyar digit{\'a}lis nyelvfeldolgoz{\'o} rendszer},
+  booktitle = {XIII. Magyar Számítógépes Nyelvészeti Konferencia (MSZNY 2017)},
+  editor    = {Gábor Berend and Gábor Gosztolya and Veronika Vincze},
+  address   = {Szeged},
+  publisher = {Szegedi Tudom{\'a}nyegyetem Informatikai Tansz{\'e}kcsoport},
+  pages     = {49--60},
+  year      = {2017}
+}
+
+@inproceedings{emtsv1,
+  author    = {Simon, Eszter and Indig, Bal{\'a}zs and Kalivoda, {\'A}gnes and Mittelholcz Iv{\'a}n and Sass, B{\'a}lint and Vad{\'a}sz, No{\'e}mi},
+  title     = {Újabb fejlemények az \texttt{e-magyar} háza táján},
+  booktitle = {XVI. Magyar Sz{\'a}m{\'\i}t{\'o}g{\'e}pes Nyelv{\'e}szeti Konferencia},
+  editor    = {Berend, G{\'a}bor and Gosztolya, G{\'a}bor and Vincze, Veronika},
+  address   = {Szeged},
+  publisher = {Szegedi Tudományegyetem Informatikai Tanszékcsoport},
+  pages     = {29-42},
+  year      = {2020}
+}
+
+@inproceedings{emtsv2,
+  title     = {One format to rule them all {--} The \texttt{emtsv} pipeline for {H}ungarian},
+  author    = {Indig, Bal{\'a}zs and Sass, B{\'a}lint and Simon, Eszter and Mittelholcz, Iv{\'a}n and
+               Vad{\'a}sz, No{\'e}mi  and Makrai, M{\'a}rton},
+  booktitle = {Proceedings of the 13th Linguistic Annotation Workshop},
+  month     = {aug},
+  year      = {2019},
+  address   = {Florence, Italy},
+  url       = {https://www.aclweb.org/anthology/W19-4018},
+  doi       = {10.18653/v1/W19-4018},
+  publisher = {Association for Computational Linguistics},
+  pages     = {155--165},
+  abstract  = {We present a more efficient version of the e-magyar NLP pipeline for Hungarian called emtsv.
+               It integrates Hungarian NLP tools in a framework whose individual modules can be developed or replaced
+               independently and allows new ones to be added. The design also allows convenient investigation and manual
+               correction of the data flow from one module to another. The improvements we publish include effective
+               communication between the modules and support of the use of individual modules both in the chain and standing
+               alone. Our goals are accomplished using extended tsv (tab separated values) files, a simple, uniform, generic and
+               self-documenting input/output format. Our vision is maintaining the system for a long time and making it easier
+               for external developers to fit their own modules into the system, thus sharing existing competencies in the field
+               of processing Hungarian, a mid-resourced language. The source code is available under LGPL 3.0 license
+               at https://github.com/dlt-rilmta/emtsv .}
+}
+
+@inproceedings{emtsv3,
+  author    = {Indig, Balázs and Sass, Bálint and Simon, Eszter and Mittelholcz, Iván and Kundráth, Péter and
+               Vadász, Noémi},
+  title     = {\texttt{emtsv} –- Egy formátum mind felett},
+  booktitle = {XV. Magyar Számítógépes Nyelvészeti Konferencia (MSZNY 2019)},
+  editor    = {Gábor Berend and Gábor Gosztolya and Veronika Vincze},
+  address   = {Szeged},
+  publisher = {Szegedi Tudományegyetem Informatikai Tanszékcsoport},
+  pages     = {235-247},
+  year      = {2019}
+}
+
+@inproceedings{grave2018learning,
+  title     = {Learning Word Vectors for 157 Languages},
+  author    = {Grave, Edouard and Bojanowski, Piotr and Gupta, Prakhar and Joulin, Armand and Mikolov, Tomas},
+  booktitle = {Proceedings of the International Conference on Language Resources and Evaluation (LREC 2018)},
+  year      = {2018}
+}
+
+@inproceedings{hfst,
+  author = {Lindén, Krister and Silfverberg, Miikka and Pirinen, Tommi},
+  year   = {2009},
+  month  = {08},
+  pages  = {28-47},
+  title  = {HFST Tools for Morphology – An Efficient Open-Source Package for Construction of Morphological Analyzers},
+  volume = {41},
+  isbn   = {978-3-642-04130-3},
+  doi    = {10.1007/978-3-642-04131-0_3}
+}
+
+@inproceedings{hundeptreebank,
+  title     = {{H}ungarian Dependency Treebank},
+  author    = {Vincze, Veronika  and
+               Szauter, D{\'o}ra  and
+               Alm{\'a}si, Attila  and
+               M{\'o}ra, Gy{\"o}rgy  and
+               Alexin, Zolt{\'a}n  and
+               Csirik, J{\'a}nos},
+  booktitle = {Proceedings of the Seventh International Conference on Language Resources and Evaluation ({LREC}'10)},
+  month     = may,
+  year      = {2010},
+  address   = {Valletta, Malta},
+  publisher = {European Language Resources Association (ELRA)},
+  url       = {http://www.lrec-conf.org/proceedings/lrec2010/pdf/465_Paper.pdf},
+  abstract  = {Herein, we present the process of developing the first Hungarian Dependency TreeBank. First, short references are made to dependency grammars we considered important in the development of our Treebank. Second, mention is made of existing dependency corpora for other languages. Third, we present the steps of converting the Szeged Treebank into dependency-tree format: from the originally phrase-structured treebank, we produced dependency trees by automatic conversion, checked and corrected them thereby creating the first manually annotated dependency corpus for Hungarian. We also go into detail about the two major sets of problems, i.e. coordination and predicative nouns and adjectives. Fourth, we give statistics on the treebank: by now, we have completed the annotation of business news, newspaper articles, legal texts and texts in informatics, at the same time, we are planning to convert the entire corpus into dependency tree format. Finally, we give some hints on the applicability of the system: the present database may be utilized ― among others ― in information extraction and machine translation as well.}
+}
+
+@inproceedings{HunWebCorpus,
+  title     = {Creating Open Language Resources for {H}ungarian},
+  author    = {Hal{\'a}csy, P{\'e}ter  and
+               Kornai, Andr{\'a}s  and
+               N{\'e}meth, L{\'a}szl{\'o}  and
+               Rung, Andr{\'a}s  and
+               Szakad{\'a}t, Istv{\'a}n  and
+               Tr{\'o}n, Viktor},
+  booktitle = {Proceedings of the Fourth International Conference on Language Resources and Evaluation ({LREC}{'}04)},
+  month     = may,
+  year      = {2004},
+  address   = {Lisbon, Portugal},
+  publisher = {European Language Resources Association (ELRA)},
+  url       = {http://www.lrec-conf.org/proceedings/lrec2004/pdf/525.pdf}
+}
+
+@misc{HuSpaCy:2021,
+  title     = {{HuSpaCy: an industrial-strength Hungarian natural language processing toolkit}},
+  booktitle = {{XVIII. Magyar Sz{\'a}m{\'\i}t{\'o}g{\'e}pes Nyelv{\'e}szeti Konferencia}},
+  author    = {Orosz, Gy{\"o}rgy and Sz{\' a}nt{\' o}, Zsolt and Berkecz, P{\' e}ter and Szab{\' o}, Gerg{\H o} and Farkas, Rich{\' a}rd},
+  location  = {{Szeged}},
+  year      = {2022}
+}
+
+@online{lemmy,
+  author  = {Kristiansen, Søren Lind},
+  title   = {{lemmy: Lemmy a lemmatizer for Danish and Swedish}},
+  url     = {https://github.com/sorenlind/lemmy},
+  month   = {Apr},
+  year    = {2019},
+  urldate = {2021-11-17}
+}
+
+@inproceedings{magyaralanc,
+  author       = {Zsibrita, János and Vincze, Veronika and Farkas, Richárd},
+  booktitle    = {{Proceedings of Recent Advances in Natural Language Provessing 2013}},
+  organization = {{Association for Computational Linguistics}},
+  address      = {Hissar, Bulgaria},
+  pages        = {763--771},
+  title        = {{magyarlanc: A Toolkit for Morphological and Dependency Parsing of Hungarian}},
+  year         = {2013}
+}
+
+@article{msd-tagset,
+  author  = {Erjavec, Toma{\v{z}}},
+  title   = {MULTEXT-East: morphosyntactic resources for Central and Eastern European languages},
+  journal = {Language Resources and Evaluation},
+  year    = {2012},
+  month   = {Mar},
+  day     = {01},
+  volume  = {46},
+  number  = {1},
+  pages   = {131--142},
+  issn    = {1574-0218},
+  doi     = {10.1007/s10579-011-9174-8},
+  url     = {https://doi.org/10.1007/s10579-011-9174-8}
+}
+
+@inproceedings{muller-etal-2015-joint,
+  title     = {Joint Lemmatization and Morphological Tagging with Lemming},
+  author    = {M{\"u}ller, Thomas  and
+               Cotterell, Ryan  and
+               Fraser, Alexander  and
+               Sch{\"u}tze, Hinrich},
+  booktitle = {Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing},
+  month     = sep,
+  year      = {2015},
+  address   = {Lisbon, Portugal},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/D15-1272},
+  doi       = {10.18653/v1/D15-1272},
+  pages     = {2268--2274}
+}
+
+@phdthesis{Nemeskey:2020,
+  author = {Nemeskey, Dávid Márk},
+  title  = {Natural Language Processing Methods for Language Modeling},
+  year   = {2020},
+  school = {E\"otv\"os Lor\'and University}
+}
+
+@inproceedings{NerKor,
+  author    = {Eszter Simon and
+               No{\'{e}}mi Vad{\'{a}}sz},
+  editor    = {Kamil Ekstein and
+               Frantisek P{\'{a}}rtl and
+               Miloslav Konop{\'{\i}}k},
+  title     = {Introducing NYTK-NerKor, {A} Gold Standard Hungarian Named Entity
+               Annotated Corpus},
+  booktitle = {Text, Speech, and Dialogue - 24th International Conference, {TSD}
+               2021, Olomouc, Czech Republic, September 6-9, 2021, Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {12848},
+  pages     = {222--234},
+  publisher = {Springer},
+  year      = {2021},
+  doi       = {10.1007/978-3-030-83527-9\_19}
+}
+
+@misc{nerkor-eval,
+  title     = {{Az NYTK-NerKor több szempontú kiértékelése}},
+  booktitle = {{XVIII. Magyar Sz\'{a}m\'{\i}t\'{o}g\'{e}pes Nyelv\'{e}szeti Konferencia}},
+  author    = {Simon, Eszter and Vadász, Noémi and Lévai, Dániel and Nemeskey, Dávid and  Szántó, Zsolt and Orosz, György},
+  year      = {\noop{3002}in press 2021}
+}
+
+@article{nivre2017universal,
+  title  = {Universal Dependencies 2.1},
+  author = {Nivre, Joakim and Agi{\'c}, {\v{Z}}eljko and Ahrenberg, Lars and Antonsen, Lene and Aranzabe, Maria Jesus and Asahara, Masayuki and Ateyah, Luma and Attia, Mohammed and Atutxa, Aitziber and Augustinus, Liesbeth and others},
+  year   = {2017}
+}
+
+@inproceedings{novak-etal-2016-new,
+  title     = {A New Integrated Open-source Morphological Analyzer for {H}ungarian},
+  author    = {Nov{\'a}k, Attila  and
+               Sikl{\'o}si, Borb{\'a}la  and
+               Oravecz, Csaba},
+  booktitle = {Proceedings of the Tenth International Conference on Language Resources and Evaluation ({LREC}'16)},
+  month     = may,
+  year      = {2016},
+  address   = {Portoro{\v{z}}, Slovenia},
+  publisher = {European Language Resources Association (ELRA)},
+  url       = {https://aclanthology.org/L16-1209},
+  pages     = {1315--1322},
+  abstract  = {The goal of a Hungarian research project has been to create an integrated Hungarian natural language processing framework. This infrastructure includes tools for analyzing Hungarian texts, integrated into a standardized environment. The morphological analyzer is one of the core components of the framework. The goal of this paper is to describe a fast and customizable morphological analyzer and its development framework, which synthesizes and further enriches the morphological knowledge implemented in previous tools existing for Hungarian. In addition, we present the method we applied to add semantic knowledge to the lexical database of the morphology. The method utilizes neural word embedding models and morphological and shallow syntactic knowledge.}
+}
+
+@phdthesis{novak2015model,
+  title  = {A model of computational morphology and its application to Uralic languages},
+  author = {Nov{\'a}k, Attila},
+  year   = {2015},
+  school = {P{\'a}zm{\'a}ny P{\'e}ter Katolikus Egyetem}
+}
+
+@article{novak2017az,
+  title     = {Az emMorph morfol{\'o}giai elemz{\H{o}} annot{\'a}ci{\'o}s formalizmusa},
+  author    = {Nov{\'a}k, Attila and Rebrus, P{\'e}ter and Lud{\'a}nyi, Zs{\'o}fia},
+  year      = {2017},
+  publisher = {Szegedi Tudom{\'a}nyegyetem Informatikai Tansz{\'e}kcsoport},
+  booktitle = {XIII. Magyar Számítógépes Nyelvészeti Konferencia (MSZNY 2017)},
+  pages     = {70--78}
+}
+
+@inproceedings{orosz-novak-2013-purepos,
+  title     = {{P}ure{P}os 2.0: a hybrid tool for morphological disambiguation},
+  author    = {Orosz, Gy{\"o}rgy  and
+               Nov{\'a}k, Attila},
+  booktitle = {Proceedings of the International Conference Recent Advances in Natural Language Processing {RANLP} 2013},
+  month     = sep,
+  year      = {2013},
+  address   = {Hissar, Bulgaria},
+  publisher = {INCOMA Ltd. Shoumen, BULGARIA},
+  url       = {https://aclanthology.org/R13-1071},
+  pages     = {539--545}
+}
+
+@article{penntreebank,
+  author     = {Marcus, Mitchell P. and Marcinkiewicz, Mary Ann and Santorini, Beatrice},
+  title      = {Building a Large Annotated Corpus of English: The Penn Treebank},
+  year       = {1993},
+  issue_date = {June 1993},
+  publisher  = {MIT Press},
+  address    = {Cambridge, MA, USA},
+  volume     = {19},
+  number     = {2},
+  issn       = {0891-2017},
+  journal    = {Comput. Linguist.},
+  month      = {jun},
+  pages      = {313–330},
+  numpages   = {18}
+}
+
+@article{richard2016modositott,
+  title   = {M{\'o}dos{\'\i}tott morfol{\'o}giai egy{\'e}rtelm{\H{u}}s{\'\i}t{\'e}s {\'e}s integr{\'a}lt konstituenselemz{\'e}s a magyarlanc 3.0-ban},
+  author  = {Rich{\'a}rd Farkas and Zsolt Sz{\'a}nt{\'o} and Veronika Vincze and J{\'a}nos Zsibrita},
+  journal = {Tan{\'a}cs Attila, Varga Viktor, Vincze Veronika (szerk.): XII. Magyar Sz{\'a}m{\'\i}t{\'o}g{\'e}pes Nyelv{\'e}szeti Konferencia. Szeged, Szegedi Tudom{\'a}nyegyetem},
+  pages   = {68--77},
+  year    = {2016}
+}
+
+@online{spacy,
+  author  = {Honnibal, Matthew},
+  title   = {{Introducing spaCy}},
+  url     = {https://explosion.ai/blog/introducing-spacy},
+  month   = {Feb},
+  year    = {2015},
+  urldate = {2021-11-17}
+},
+@online{spacy-edit-tree,
+  author  = {de Kok, Dani{\"e}l},
+  title   = {{Neural edit-tree lemmatization for spaCy}},
+  url     = {https://explosion.ai/blog/edit-tree-lemmatizer},
+  month   = {Nov},
+  year    = {2021},
+  urldate = {2022-03-14}
+}
+
+@misc{spacy-ner,
+  title         = {{Neural Architectures for Named Entity Recognition}},
+  author        = {Guillaume Lample and Miguel Ballesteros and Sandeep Subramanian and Kazuya Kawakami and Chris Dyer},
+  year          = {2016},
+  eprint        = {1603.01360},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CL}
+}
+
+@online{spacy-neural-model,
+  author  = {Honnibal, Matthew},
+  title   = {{Embed, encode, attend, predict: The new deep learning formula for state-of-the-art NLP models}},
+  url     = {https://explosion.ai/blog/deep-learning-formula-nlp},
+  month   = {Nov},
+  year    = {2016},
+  urldate = {2021-11-17}
+}
+
+@inproceedings{spacy-parser,
+  title     = {A Non-Monotonic Arc-Eager Transition System for Dependency Parsing},
+  author    = {Honnibal, Matthew  and
+               Goldberg, Yoav  and
+               Johnson, Mark},
+  booktitle = {Proceedings of the Seventeenth Conference on Computational Natural Language Learning},
+  month     = aug,
+  year      = {2013},
+  address   = {Sofia, Bulgaria},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/W13-3518},
+  pages     = {163--172}
+}
+
+@online{spacy-parser2,
+  author  = {Honnibal, Matthew},
+  title   = {Multi-task CNN for parser, tagger and NER (Issue \#1057)},
+  url     = {https://github.com/explosion/spaCy/issues/1057},
+  month   = {May},
+  year    = {2017},
+  urldate = {2021-11-21}
+}
+
+@online{spacy-tokenization,
+  author  = {Honnibal, Matthew},
+  title   = {{Tokenization - spaCy Usage Documentation}},
+  month   = {Nov},
+  year    = {2021},
+  url     = {https://spacy.io/usage/linguistic-features},
+  urldate = {2021-11-17}
+}
+
+@inproceedings{stanza,
+  title     = {Stanza: A {Python} Natural Language Processing Toolkit for Many Human Languages},
+  author    = {Qi, Peng and Zhang, Yuhao and Zhang, Yuhui and Bolton, Jason and Manning, Christopher D.},
+  booktitle = {Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics: System Demonstrations},
+  year      = {2020}
+}
+
+@inproceedings{szegedcorpus,
+  author    = {Csendes, D\'{o}ra and Csirik, J\'{a}nos and Gyim\'{o}thy, Tibor},
+  booktitle = {{Proceedings of the 5th International Workshop on Linguistically Interpreted Corpora LINC 2004 at The 20th International Conference on Computational Linguistics COLING 2004}},
+  pages     = {19--23},
+  title     = {{The Szeged Corpus: A POS tagged and syntactically annotated Hungarian natural language corpus}},
+  year      = {2004}
+}
+
+@inproceedings{udpipe,
+  title     = {{UDP}ipe 2.0 Prototype at {C}o{NLL} 2018 {UD} Shared Task},
+  author    = {Straka, Milan},
+  booktitle = {Proceedings of the {C}o{NLL} 2018 Shared Task: Multilingual Parsing from Raw Text to Universal Dependencies},
+  month     = oct,
+  year      = {2018},
+  address   = {Brussels, Belgium},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://www.aclweb.org/anthology/K18-2020},
+  doi       = {10.18653/v1/K18-2020},
+  pages     = {197--207}
+}
+
+@inproceedings{udpos,
+  title     = {A Universal Part-of-Speech Tagset},
+  author    = {Petrov, Slav  and
+               Das, Dipanjan  and
+               McDonald, Ryan},
+  booktitle = {Proceedings of the Eighth International Conference on Language Resources and Evaluation ({LREC}'12)},
+  month     = may,
+  year      = {2012},
+  address   = {Istanbul, Turkey},
+  publisher = {European Language Resources Association (ELRA)},
+  url       = {http://www.lrec-conf.org/proceedings/lrec2012/pdf/274_Paper.pdf},
+  pages     = {2089--2096}
+}
+
+@article{UniDep,
+  author   = {de Marneffe, Marie-Catherine and Manning, Christopher D. and Nivre, Joakim and Zeman, Daniel},
+  title    = {{Universal Dependencies}},
+  journal  = {Computational Linguistics},
+  volume   = {47},
+  number   = {2},
+  pages    = {255-308},
+  year     = {2021},
+  month    = {07},
+  abstract = {{Universal dependencies (UD) is a framework for morphosyntactic annotation of human language, which to date has been used to create treebanks for more than 100 languages. In this article, we outline the linguistic theory of the UD framework, which draws on a long tradition of typologically oriented grammatical theories. Grammatical relations between words are centrally used to explain how predicate–argument structures are encoded morphosyntactically in different languages while morphological features and part-of-speech classes give the properties of words. We argue that this theory is a good basis for crosslinguistically consistent annotation of typologically diverse languages in a way that supports computational natural language understanding as well as broader linguistic studies.}},
+  issn     = {0891-2017},
+  doi      = {10.1162/coli_a_00402},
+  url      = {https://doi.org/10.1162/coli\_a\_00402},
+  eprint   = {https://direct.mit.edu/coli/article-pdf/47/2/255/1938138/coli\_a\_00402.pdf}
+}
+
+@inproceedings{unimorph,
+  title     = {{U}ni{M}orph 3.0: {U}niversal {M}orphology},
+  author    = {McCarthy, Arya D.  and
+               Kirov, Christo  and
+               Grella, Matteo  and
+               Nidhi, Amrit  and
+               Xia, Patrick  and
+               Gorman, Kyle  and
+               Vylomova, Ekaterina  and
+               Mielke, Sabrina J.  and
+               Nicolai, Garrett  and
+               Silfverberg, Miikka  and
+               Arkhangelskiy, Timofey  and
+               Krizhanovsky, Nataly  and
+               Krizhanovsky, Andrew  and
+               Klyachko, Elena  and
+               Sorokin, Alexey  and
+               Mansfield, John  and
+               Ern{\v{s}}treits, Valts  and
+               Pinter, Yuval  and
+               Jacobs, Cassandra L.  and
+               Cotterell, Ryan  and
+               Hulden, Mans  and
+               Yarowsky, David},
+  booktitle = {Proceedings of the 12th Language Resources and Evaluation Conference},
+  month     = may,
+  year      = {2020},
+  address   = {Marseille, France},
+  publisher = {European Language Resources Association},
+  url       = {https://aclanthology.org/2020.lrec-1.483},
+  pages     = {3922--3931},
+  abstract  = {The Universal Morphology (UniMorph) project is a collaborative effort providing broad-coverage instantiated normalized morphological paradigms for hundreds of diverse world languages. The project comprises two major thrusts: a language-independent feature schema for rich morphological annotation and a type-level resource of annotated data in diverse languages realizing that schema. We have implemented several improvements to the extraction pipeline which creates most of our data, so that it is both more complete and more correct. We have added 66 new languages, as well as new parts of speech for 12 languages. We have also amended the schema in several ways. Finally, we present three new community tools: two to validate data for resource creators, and one to make morphological data available from the command line. UniMorph is based at the Center for Language and Speech Processing (CLSP) at Johns Hopkins University in Baltimore, Maryland. This paper details advances made to the schema, tooling, and dissemination of project resources since the UniMorph 2.0 release described at LREC 2018.},
+  language  = {English},
+  isbn      = {979-10-95546-34-4}
+}
+
+@inproceedings{vincze-etal-2017-universal,
+  title     = {{U}niversal {D}ependencies and Morphology for {H}ungarian - and on the Price of Universality},
+  author    = {Vincze, Veronika  and
+               Simk{\'o}, Katalin  and
+               Sz{\'a}nt{\'o}, Zsolt  and
+               Farkas, Rich{\'a}rd},
+  booktitle = {Proceedings of the 15th Conference of the {E}uropean Chapter of the Association for Computational Linguistics: Volume 1, Long Papers},
+  month     = apr,
+  year      = {2017},
+  address   = {Valencia, Spain},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/E17-1034},
+  pages     = {356--365},
+  abstract  = {In this paper, we present how the principles of universal dependencies and morphology have been adapted to Hungarian. We report the most challenging grammatical phenomena and our solutions to those. On the basis of the adapted guidelines, we have converted and manually corrected 1,800 sentences from the Szeged Treebank to universal dependency format. We also introduce experiments on this manually annotated corpus for evaluating automatic conversion and the added value of language-specific, i.e. non-universal, annotations. Our results reveal that converting to universal dependencies is not necessarily trivial, moreover, using language-specific morphological features may have an impact on overall performance.}
+}
+
+@misc{word2vec,
+  title         = {Efficient Estimation of Word Representations in Vector Space},
+  author        = {Tomas Mikolov and Kai Chen and Greg Corrado and Jeffrey Dean},
+  year          = {2013},
+  eprint        = {1301.3781},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CL}
+}
+
+@article{zsibrita2013magyarlanc,
+  title     = {magyarlanc 2.0: szintaktikai elemz{\'e}s {\'e}s felgyors{\'\i}tott sz{\'o}faji egy{\'e}rtelm{\H{u}}s{\'\i}t{\'e}s},
+  author    = {Zsibrita, J{\'a}nos and Vincze, Veronika and Farkas, Rich{\'a}rd},
+  year      = {2013},
+  publisher = {Szegedi Tudom{\'a}nyegyetem Informatikai Tansz{\'e}kcsoport}
+}
+
+@phdthesis{orosz2015hybrid,
+  title={Hybrid algorithms for preprocessing agglutinative languages and less-resourced domains effectively},
+  author={Orosz, Gy{\"o}rgy},
+  year={2015},
+  school={P{\'a}zm{\'a}ny P{\'e}ter Katolikus Egyetem}
+}
+
+ @misc{floret, title={floret}, url={https://github.com/explosion/floret}, journal={fastText + Bloom embeddings for compact, full-coverage vectors with spaCy}, author={Boyd, Adriane}, year={2021},   urldate = {2022-11-21}} 
+
+ @inproceedings{novak2016new,
+  title={A new integrated open-source morphological analyzer for Hungarian},
+  author={Nov{\'a}k, Attila and Sikl{\'o}si, Borb{\'a}la and Oravecz, Csaba},
+  booktitle={Proceedings of the Tenth International Conference on Language Resources and Evaluation (LREC'16)},
+  pages={1315--1322},
+  year={2016}
+}
+
+@article{novak2014new,
+  title={A New Form of Humor? Mapping Constraint-Based Computational Morphologies to a Finite-State Representation},
+  author={Nov{\'a}k, Attila},
+  year={2014},
+  publisher={ELRA}
+}
+
+@techreport{tron2006annotation,
+  title={The annotation system of HunMorph},
+  author={Tr{\'o}n, Viktor and Hal{\'a}csy, P{\'e}ter and Rebrus, P{\'e}ter and Rung, Andr{\'a}s and Simon, Eszter and Vajda, P{\'e}ter},
+  year={2006},
+  institution={Technical Report, The Media Research Center, Budapest University of~…}
+}
+
+@misc{https://doi.org/10.48550/arxiv.1911.02116,
+  doi = {10.48550/ARXIV.1911.02116},
+  
+  url = {https://arxiv.org/abs/1911.02116},
+  
+  author = {Conneau, Alexis and Khandelwal, Kartikay and Goyal, Naman and Chaudhary, Vishrav and Wenzek, Guillaume and Guzmán, Francisco and Grave, Edouard and Ott, Myle and Zettlemoyer, Luke and Stoyanov, Veselin},
+  
+  keywords = {Computation and Language (cs.CL), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  
+  title = {Unsupervised Cross-lingual Representation Learning at Scale},
+  
+  publisher = {arXiv},
+  
+  year = {2019},
+  
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
+@misc{https://doi.org/10.48550/arxiv.1810.04805,
+  doi = {10.48550/ARXIV.1810.04805},
+  
+  url = {https://arxiv.org/abs/1810.04805},
+  
+  author = {Devlin, Jacob and Chang, Ming-Wei and Lee, Kenton and Toutanova, Kristina},
+  
+  keywords = {Computation and Language (cs.CL), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  
+  title = {BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding},
+  
+  publisher = {arXiv},
+  
+  year = {2018},
+  
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
+@inproceedings{gergo,
+  title={{Transformer-alap{\'u} HuSpaCy el{\H{o}}elemz{\H{o}} l{\'a}ncok}},
+  author={Szab{\'o}, Gerg{\H{o}} and Orosz, Gy{\"o}rgy and Sz{\'a}nt{\'o}, Zsolt and Berkecz, P{\'e}ter and Farkas, Rich{\'a}rd},
+  booktitle={{XIX. Magyar Sz\'{a}m\'{\i}t\'{o}g\'{e}pes Nyelv\'{e}szeti Konferencia}},
+  year={2023}
+}
